@@ -613,14 +613,14 @@
 
                     <div class="row g-2 mb-3">
                         <div class="col-md-4">
-                            <div class="card p-2 border-0 bg-light h-100 mb-0">
-                                <label for="inputLat" class="text-muted small fw-bold text-uppercase mb-1" style="font-size: 0.68rem;">Coordinate (Lat / Lng)</label>
-                                <div class="d-flex align-items-center gap-1">
-                                    <input type="number" step="0.0001" id="inputLat" class="form-control form-control-sm" value="45.4384" placeholder="Lat">
-                                    <input type="number" step="0.0001" id="inputLng" class="form-control form-control-sm" value="10.9916" placeholder="Lng">
-                                    <button class="btn btn-secondary btn-sm" onclick="fetchWeatherData()" title="Aggiorna"><i class="fa-solid fa-arrows-rotate"></i></button>
+                            <div class="card p-2 border-0 bg-light h-100 mb-0 d-flex flex-column justify-content-between">
+                                <div>
+                                    <input type="hidden" id="inputLat" value="45.4384">
+                                    <input type="hidden" id="inputLng" value="10.9916">
+                                    <div class="text-muted small fw-bold text-uppercase mb-1" style="font-size: 0.68rem;">Posizione Geografica</div>
+                                    <span class="small text-dark fw-bold mt-1 d-block" id="locName" style="font-size: 0.75rem;">Rilevamento in corso...</span>
                                 </div>
-                                <span class="small text-muted mt-1" id="locName" style="font-size: 0.7rem;">Verona/Vicenza (Default)</span>
+                                <button class="btn btn-outline-primary btn-sm mt-2 py-1" style="font-size: 0.7rem;" onclick="fetchWeatherData()"><i class="fa-solid fa-arrows-rotate me-1"></i>Aggiorna Posizione GPS</button>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -1164,11 +1164,11 @@
                         const lng = position.coords.longitude;
                         latInput.value = lat.toFixed(4);
                         lngInput.value = lng.toFixed(4);
-                        locName.innerText = `GPS OK (Lat: ${lat.toFixed(2)}, Lng: ${lng.toFixed(2)})`;
+                        locName.innerText = `GPS Rilevato (Lat: ${lat.toFixed(2)}, Lng: ${lng.toFixed(2)})`;
                         loadMeteoDataFromCoords(lat, lng);
                     },
                     (error) => {
-                        locName.innerText = "GPS non attivo. Uso coordinate.";
+                        locName.innerText = "GPS non attivo. Uso coordinate predefinite.";
                         fallbackCoords(latInput, lngInput, locName);
                     },
                     { timeout: 8000, enableHighAccuracy: false }
@@ -1660,5 +1660,8 @@
             });
         }
     </script>
+<footer style="text-align: center; font-size: 10px; color: #666; margin-top: 20px;">
+    Made by G. Defanti - Resp Tecnico Golf ICL Italia
+</footer>
 </body>
 </html>
