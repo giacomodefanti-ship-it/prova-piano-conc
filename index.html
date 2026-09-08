@@ -606,21 +606,26 @@
                             <h2 class="h6 fw-bold text-warning mb-1" style="color: var(--warning-custom) !important;"><i class="fa-solid fa-bug me-1" aria-hidden="true"></i>Modello Smith-Kerns (Dollar Spot)</h2>
                             <p class="small text-muted mb-0" style="font-size: 0.75rem;">Probabilità di infezione basata su temperatura e umidità rel. (5gg).</p>
                         </div>
-                        <button id="btnGeoWeather" class="btn btn-primary btn-sm py-1 rounded-pill" style="font-size: 0.75rem;" onclick="fetchWeatherData()">
-                            <i class="fa-solid fa-location-dot me-1" aria-hidden="true"></i> Rileva GPS & Meteo
-                        </button>
+                        <div class="d-flex gap-1 flex-wrap">
+                            <button id="btnGeoWeather" class="btn btn-primary btn-sm py-1 rounded-pill" style="font-size: 0.75rem;" onclick="fetchWeatherData()">
+                                <i class="fa-solid fa-location-dot me-1" aria-hidden="true"></i> Rileva GPS & Meteo
+                            </button>
+                            <button id="btnWatchPos" class="btn btn-outline-primary btn-sm py-1 rounded-pill" style="font-size: 0.75rem;" onclick="toggleWatchPosition()">
+                                <i class="fa-solid fa-satellite-dish me-1" aria-hidden="true"></i> <span id="watchPosBtnText">Avvia Tracking Live</span>
+                            </button>
+                        </div>
                     </div>
 
                     <div class="row g-2 mb-3">
                         <div class="col-md-4">
-                            <div class="card p-2 border-0 bg-light h-100 mb-0 d-flex flex-column justify-content-between">
-                                <div>
-                                    <input type="hidden" id="inputLat" value="45.4384">
-                                    <input type="hidden" id="inputLng" value="10.9916">
-                                    <div class="text-muted small fw-bold text-uppercase mb-1" style="font-size: 0.68rem;">Posizione Geografica</div>
-                                    <span class="small text-dark fw-bold mt-1 d-block" id="locName" style="font-size: 0.75rem;">Rilevamento in corso...</span>
+                            <div class="card p-2 border-0 bg-light h-100 mb-0">
+                                <label for="inputLat" class="text-muted small fw-bold text-uppercase mb-1" style="font-size: 0.68rem;">Coordinate (Lat / Lng)</label>
+                                <div class="d-flex align-items-center gap-1">
+                                    <input type="number" step="0.0001" id="inputLat" class="form-control form-control-sm" value="45.4384" placeholder="Lat">
+                                    <input type="number" step="0.0001" id="inputLng" class="form-control form-control-sm" value="10.9916" placeholder="Lng">
+                                    <button class="btn btn-secondary btn-sm" onclick="fetchWeatherData()" title="Aggiorna"><i class="fa-solid fa-arrows-rotate"></i></button>
                                 </div>
-                                <button class="btn btn-outline-primary btn-sm mt-2 py-1" style="font-size: 0.7rem;" onclick="fetchWeatherData()"><i class="fa-solid fa-arrows-rotate me-1"></i>Aggiorna Posizione GPS</button>
+                                <span class="small text-muted mt-1" id="locName" style="font-size: 0.7rem;">Verona/Vicenza (Default)</span>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -1055,6 +1060,7 @@
         let microdochiumChartInstance = null;
         let brownPatchChartInstance = null;
         let gpChartInstance = null;
+        let watchId = null; // Variabile per gestire il watchPosition
 
         let planEntries = [
             { period: "Marzo S2", family: "ProTurf", name: "High N", dose: 25, price: 42.00 },
@@ -1164,17 +1170,62 @@
                         const lng = position.coords.longitude;
                         latInput.value = lat.toFixed(4);
                         lngInput.value = lng.toFixed(4);
-                        locName.innerText = `GPS Rilevato (Lat: ${lat.toFixed(2)}, Lng: ${lng.toFixed(2)})`;
+                        locName.innerText = `GPS OK (Lat: ${lat.toFixed(2)}, Lng: ${lng.toFixed(2)})`;
                         loadMeteoDataFromCoords(lat, lng);
                     },
                     (error) => {
-                        locName.innerText = "GPS non attivo. Uso coordinate predefinite.";
+                        locName.innerText = "GPS non attivo. Uso coordinate.";
                         fallbackCoords(latInput, lngInput, locName);
                     },
                     { timeout: 8000, enableHighAccuracy: false }
                 );
             } else {
                 fallbackCoords(latInput, lngInput, locName);
+            }
+        }
+
+        // Funzione per attivare/disattivare il monitoraggio continuo della posizione (watchPosition)
+        function toggleWatchPosition() {
+            const btnText = document.getElementById('watchPosBtnText');
+            const btnObj = document.getElementById('btnWatchPos');
+            const locName = document.getElementById('locName');
+
+            if (watchId !== null) {
+                navigator.geolocation.clearWatch(watchId);
+                watchId = null;
+                btnText.innerText = "Avvia Tracking Live";
+                btnObj.classList.remove('btn-danger');
+                btnObj.classList.add('btn-outline-primary');
+                locName.innerText = "Tracking live disattivato.";
+            } else {
+                if (!navigator.geolocation) {
+                    alert("La geolocalizzazione non è supportata dal tuo browser.");
+                    return;
+                }
+                btnText.innerText = "Ferma Tracking";
+                btnObj.classList.remove('btn-outline-primary');
+                btnObj.classList.add('btn-danger');
+                locName.innerText = "Avvio tracking continuo...";
+
+                watchId = navigator.geolocation.watchPosition(
+                    (position) => {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        document.getElementById('inputLat').value = lat.toFixed(4);
+                        document.getElementById('inputLng').value = lng.toFixed(4);
+                        locName.innerText = `Live GPS (Lat: ${lat.toFixed(2)}, Lng: ${lng.toFixed(2)})`;
+                        loadMeteoDataFromCoords(lat, lng);
+                    },
+                    (error) => {
+                        console.error("Errore watchPosition:", error.message);
+                        locName.innerText = "Errore tracciamento live.";
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        maximumAge: 10000,
+                        timeout: 20000
+                    }
+                );
             }
         }
 
@@ -1660,8 +1711,5 @@
             });
         }
     </script>
-<footer style="text-align: center; font-size: 10px; color: #666; margin-top: 20px;">
-    Made by G. Defanti - Resp Tecnico Golf ICL Italia
-</footer>
 </body>
 </html>
