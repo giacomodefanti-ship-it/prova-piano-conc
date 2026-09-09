@@ -284,7 +284,7 @@
 <body>
 
     <!-- Header Banner -->
-    <header class="header-banner">
+    <header class="header-banner position-relative">
         <div class="container-fluid px-2">
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                 <div>
@@ -297,8 +297,12 @@
                     <button class="btn btn-warning btn-sm rounded-pill fw-bold text-dark px-2 shadow-sm no-print" onclick="saveUserData()" title="Salva Dati">
                         <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i> <span class="d-none d-sm-inline">Salva</span>
                     </button>
-                    <button class="btn btn-outline-danger btn-sm rounded-pill fw-bold px-2 shadow-sm no-print" onclick="resetAllCosts()" title="Azzera Costi">
-                        <i class="fa-solid fa-eraser" aria-hidden="true"></i> <span class="d-none d-sm-inline">Azzera</span>
+                    <!-- Tasto Azzeramento Costi Prodotti posizionato vicino a Salva -->
+                    <button class="btn btn-outline-light btn-sm rounded-pill fw-bold px-2 shadow-sm no-print" onclick="resetOnlyProductCosts()" title="Azzera Costi Prodotti">
+                        <i class="fa-solid fa-rotate-left" aria-hidden="true"></i> <span class="d-none d-sm-inline">Azzera Costi</span>
+                    </button>
+                    <button class="btn btn-outline-danger btn-sm rounded-pill fw-bold px-2 shadow-sm no-print" onclick="resetAllCosts()" title="Azzera Piano">
+                        <i class="fa-solid fa-eraser" aria-hidden="true"></i> <span class="d-none d-sm-inline">Azzera Tutto</span>
                     </button>
                     <button class="btn btn-light btn-sm rounded-pill fw-bold text-dark px-2 shadow-sm no-print" onclick="window.print()" title="Stampa">
                         <i class="fa-solid fa-print" aria-hidden="true"></i>
@@ -606,12 +610,9 @@
                             <h2 class="h6 fw-bold text-warning mb-1" style="color: var(--warning-custom) !important;"><i class="fa-solid fa-bug me-1" aria-hidden="true"></i>Modello Smith-Kerns (Dollar Spot)</h2>
                             <p class="small text-muted mb-0" style="font-size: 0.75rem;">Probabilità di infezione basata su temperatura e umidità rel. (5gg).</p>
                         </div>
-                        <div class="d-flex gap-1 flex-wrap">
-                            <button id="btnGeoWeather" class="btn btn-primary btn-sm py-1 rounded-pill" style="font-size: 0.75rem;" onclick="fetchWeatherData()">
-                                <i class="fa-solid fa-location-dot me-1" aria-hidden="true"></i> Rileva GPS & Meteo
-                            </button>
-                            <button id="btnWatchPos" class="btn btn-outline-primary btn-sm py-1 rounded-pill" style="font-size: 0.75rem;" onclick="toggleWatchPosition()">
-                                <i class="fa-solid fa-satellite-dish me-1" aria-hidden="true"></i> <span id="watchPosBtnText">Avvia Tracking Live</span>
+                        <div class="d-flex align-items-center gap-1">
+                            <button id="btnGeoWeather" class="btn btn-primary btn-sm py-1 rounded-pill text-nowrap" style="font-size: 0.75rem;" onclick="fetchWeatherData()">
+                                <i class="fa-solid fa-location-crosshairs me-1" aria-hidden="true"></i> Rileva GPS
                             </button>
                         </div>
                     </div>
@@ -619,13 +620,11 @@
                     <div class="row g-2 mb-3">
                         <div class="col-md-4">
                             <div class="card p-2 border-0 bg-light h-100 mb-0">
-                                <label for="inputLat" class="text-muted small fw-bold text-uppercase mb-1" style="font-size: 0.68rem;">Coordinate (Lat / Lng)</label>
+                                <label class="text-muted small fw-bold text-uppercase mb-1" style="font-size: 0.68rem;">Località GPS</label>
                                 <div class="d-flex align-items-center gap-1">
-                                    <input type="number" step="0.0001" id="inputLat" class="form-control form-control-sm" value="45.4384" placeholder="Lat">
-                                    <input type="number" step="0.0001" id="inputLng" class="form-control form-control-sm" value="10.9916" placeholder="Lng">
-                                    <button class="btn btn-secondary btn-sm" onclick="fetchWeatherData()" title="Aggiorna"><i class="fa-solid fa-arrows-rotate"></i></button>
+                                    <span class="fw-bold text-dark small" id="locName">In attesa di posizione...</span>
                                 </div>
-                                <span class="small text-muted mt-1" id="locName" style="font-size: 0.7rem;">Verona/Vicenza (Default)</span>
+                                <span class="small text-muted mt-1" style="font-size: 0.7rem;">Dati meteo live Open-Meteo</span>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -672,7 +671,7 @@
                             <p class="small text-muted mb-0" style="font-size: 0.75rem;">Temperature fresche (5°C - 20°C) e umidità persistente.</p>
                         </div>
                         <button class="btn btn-primary btn-sm py-1 rounded-pill" style="font-size: 0.75rem;" onclick="fetchWeatherData()">
-                            <i class="fa-solid fa-location-dot me-1" aria-hidden="true"></i> Aggiorna Meteo
+                            <i class="fa-solid fa-location-crosshairs me-1" aria-hidden="true"></i> Aggiorna Meteo GPS
                         </button>
                     </div>
 
@@ -730,7 +729,7 @@
                         </div>
                         <div class="d-flex gap-1">
                             <button class="btn btn-primary btn-sm py-1 rounded-pill" style="font-size: 0.75rem;" onclick="fetchWeatherData()">
-                                <i class="fa-solid fa-location-dot me-1" aria-hidden="true"></i> Meteo
+                                <i class="fa-solid fa-location-crosshairs me-1" aria-hidden="true"></i> Aggiorna Meteo GPS
                             </button>
                         </div>
                     </div>
@@ -790,12 +789,12 @@
                             <p class="small text-muted mb-0" style="font-size: 0.75rem;">Modello agrometeorologico per Zoysia e Lolium.</p>
                         </div>
                         <button class="btn btn-primary btn-sm py-1 rounded-pill" style="font-size: 0.75rem;" onclick="fetchWeatherData()">
-                            <i class="fa-solid fa-location-dot me-1" aria-hidden="true"></i> Ricalcola Meteo
+                            <i class="fa-solid fa-location-crosshairs me-1" aria-hidden="true"></i> Aggiorna Meteo GPS
                         </button>
                     </div>
 
                     <div id="pyStatusBox" class="p-2 mb-2 rounded bg-light border fw-bold text-center" style="font-size: 0.8rem;">
-                        In attesa dati meteo...
+                        In attesa dati meteo GPS...
                     </div>
 
                     <div class="row g-2 mb-3">
@@ -840,7 +839,7 @@
                     <div class="p-2 summary-box mb-0" style="border-left-color: var(--py-primary) !important; background-color: #f0fdf4; font-size: 0.8rem;">
                         <h4 class="h6 fw-bold mb-1" style="color: var(--py-primary); font-size: 0.82rem;"><i class="fa-solid fa-circle-info me-1" aria-hidden="true"></i>Nota sul Modello:</h4>
                         <p class="small text-muted mb-0" style="font-size: 0.75rem;" id="pyLocationInfo">
-                            Modello integrato ITM (Turf Toolbox) - API Open-Meteo.
+                            Modello integrato ITM (Turf Toolbox) - API Open-Meteo GPS.
                         </p>
                     </div>
                 </div>
@@ -932,18 +931,18 @@
                                 <h3 class="h6 fw-bold text-secondary mb-1" style="font-size: 0.82rem;"><i class="fa-solid fa-calculator me-1"></i> Fondamenti</h3>
                                 <p class="small text-muted mb-1">Formula PACE Turf:</p>
                                 <div class="p-1 bg-white rounded border text-center font-monospace small mb-1" style="font-size: 0.72rem;">
-                                    $GP = e^{- \left( \frac{T_{act} - T_{opt}}{V} \right)^2}$
+                                    GP = exp(-((T_act - T_opt) / V)^2)
                                 </div>
                                 <ul class="small text-muted ps-3 mb-0">
-                                    <li><strong>C3:</strong> $T_{opt} = 20 \text{ °C}$ ($16-24 \text{ °C}$).</li>
-                                    <li><strong>C4:</strong> $T_{opt} = 31 \text{ °C}$ ($27-35 \text{ °C}$).</li>
+                                    <li><strong>C3:</strong> T_opt = 20 °C (16-24 °C).</li>
+                                    <li><strong>C4:</strong> T_opt = 31 °C (27-35 °C).</li>
                                 </ul>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="card p-2 border-0 bg-light h-100 mb-0" style="font-size: 0.78rem;">
                                 <h3 class="h6 fw-bold text-secondary mb-1" style="font-size: 0.82rem;"><i class="fa-solid fa-lightbulb me-1"></i> Sincronizzazione</h3>
-                                <p class="small text-muted mb-0">Le barre blu indicano l'Azoto (N) ripartito nei mesi di rilascio. L'obiettivo è fare coincidere la cessione con GP alto ($> 50\%$).</p>
+                                <p class="small text-muted mb-0">Le barre blu indicano l'Azoto (N) ripartito dinamicamente dai dati inseriti nella tabella degli interventi. L'obiettivo è fare coincidere la cessione con GP alto (> 50%).</p>
                             </div>
                         </div>
                     </div>
@@ -975,11 +974,11 @@
             { family: "Landscaper Pro", name: "New Grass", spec: "16.25.12", n: 16, p: 25, k: 12, durationMonths: 3, durationText: "3 Mesi", pack: 15, defaultPrice: 40.00, duration: 1 },
             { family: "Landscaper Pro", name: "Full Season", spec: "27.5.5 + 2MgO", n: 27, p: 5, k: 5, durationMonths: 8, durationText: "8-9 Mesi", pack: 15, defaultPrice: 45.00, duration: 3 },
             { family: "Landscaper Pro", name: "Shade Special", spec: "11.5.5 + 8Fe", n: 11, p: 5, k: 5, durationMonths: 2, durationText: "8 Settimane", pack: 15, defaultPrice: 36.00, duration: 2 },
-            { family: "Landscaper Pro", name: "Flora", spec: "15.9.11 + 3MgO", n: 15, p: 9, k: 11, durationMonths: 5, durationText: "5-6 Mesi", pack: 15, defaultPrice: 42.00, duration: 2 },
+            { family: "Landscaper Pro", name: "Flora", spec: "15.9.11 + 3MgO", n: 15, p: 9, k: 11, durationMonths: 5, durationText: "5-6 Mesi", pack: 15, defaultPrice: 42.00, duration: 5 },
             { family: "Landscaper Pro", name: "Universtar Classic", spec: "15.5.15 + 2MgO", n: 15, p: 5, k: 15, durationMonths: 3, durationText: "3 Mesi", pack: 25, defaultPrice: 42.00, duration: 2 },   
             { family: "Landscaper Pro", name: "Universtar Balance", spec: "15.5.16", n: 15, p: 5, k: 16, durationMonths: 3, durationText: "3 Mesi", pack: 25, defaultPrice: 56.00, duration: 2 },        
-            { family: "Landscaper Pro", name: "Readystar N", spec: "21.6.9 + 6.5CaO + 2MgO + 19SO3", n: 21, p: 6, k: 9, durationMonths: 0, durationText: "Pronto effetto", pack: 25, defaultPrice: 41.00, duration: 2 },
-            { family: "Landscaper Pro", name: "Readystar K", spec: "10.10.16 + 6.5CaO + MgO + 19SO3", n: 10, p: 10, k: 16, durationMonths: 0, durationText: "Pronto effetto", pack: 25, defaultPrice: 41.00, duration: 2 },
+            { family: "Landscaper Pro", name: "Readystar N", spec: "21.6.9 + 6.5CaO + 2MgO + 19SO3", n: 21, p: 6, k: 9, durationMonths: 1, durationText: "Pronto effetto", pack: 25, defaultPrice: 41.00, duration: 2 },
+            { family: "Landscaper Pro", name: "Readystar K", spec: "10.10.16 + 6.5CaO + MgO + 19SO3", n: 10, p: 10, k: 16, durationMonths: 1, durationText: "Pronto effetto", pack: 25, defaultPrice: 41.00, duration: 2 },
 
             { family: "Sierrablen Plus", name: "Mini", spec: "38-0-0", n: 38, p: 0, k: 0, durationMonths: 3, durationText: "2-3 Mesi", pack: 25, defaultPrice: 69.00, duration: 3 },
             { family: "Sierrablen Plus", name: "Active", spec: "19-5-18 + Micro", n: 19, p: 5, k: 18, durationMonths: 3, durationText: "3 Mesi", pack: 25, defaultPrice: 85.00, duration: 3 },
@@ -1017,14 +1016,14 @@
             { family: "Gronamic", name: "Golf Mini High K", spec: "Organo-minerale 5.0.22 + 3MgO", n: 5, p: 0, k: 22, durationMonths: 1, durationText: "Rilascio graduale", pack: 25, defaultPrice: 54.00, duration: 1 },
             { family: "Gronamic", name: "Golf Mini High N", spec: "Organo-minerale 16.3.6 + MgO", n: 16, p: 3, k: 6, durationMonths: 1, durationText: "Rilascio graduale", pack: 25, defaultPrice: 50.00, duration: 1 },
 
-            { family: "Sierraform", name: "Momentum", spec: "22.5.11", n: 22, p: 5, k: 11, durationMonths: 2, durationText: "8-10 Settimane", pack: 20, defaultPrice: 72.00, duration: 6 },
-            { family: "Sierraform", name: "All season", spec: "18.6.18", n: 18, p: 6, k: 18, durationMonths: 2, durationText: "8-10 Settimane", pack: 20, defaultPrice: 70.00, duration: 6 },
-            { family: "Sierraform", name: "Spring Starter", spec: "16.0.16", n: 16, p: 0, k: 16, durationMonths: 2, durationText: "8-10 Settimane", pack: 20, defaultPrice: 68.00, duration: 6 },
-            { family: "Sierraform", name: "Stress Control", spec: "15.0.26", n: 15, p: 0, k: 26, durationMonths: 2, durationText: "8-10 Settimane", pack: 20, defaultPrice: 75.00, duration: 6 },
+            { family: "Sierraform", name: "Momentum", spec: "22.5.11", n: 22, p: 5, k: 11, durationMonths: 2, durationText: "8-10 Settimane", pack: 20, defaultPrice: 72.00, duration: 2 },
+            { family: "Sierraform", name: "All season", spec: "18.6.18", n: 18, p: 6, k: 18, durationMonths: 2, durationText: "8-10 Settimane", pack: 20, defaultPrice: 70.00, duration: 2 },
+            { family: "Sierraform", name: "Spring Starter", spec: "16.0.16", n: 16, p: 0, k: 16, durationMonths: 2, durationText: "8-10 Settimane", pack: 20, defaultPrice: 68.00, duration: 2 },
+            { family: "Sierraform", name: "Stress Control", spec: "15.0.26", n: 15, p: 0, k: 26, durationMonths: 2, durationText: "8-10 Settimane", pack: 20, defaultPrice: 75.00, duration: 2 },
 
-            { family: "Greenmaster Prolite", name: "NK", spec: "12.0.12", n: 12, p: 0, k: 12, durationMonths: 1, durationText: "8-10 Settimane", pack: 25, defaultPrice: 75.00, duration: 6 },
-            { family: "Greenmaster Prolite", name: "Invigorator Plus", spec: "4.3.14", n: 4, p: 3, k: 14, durationMonths: 1, durationText: "8-10 Settimane", pack: 25, defaultPrice: 75.00, duration: 6 },
-            { family: "Greenmaster Prolite", name: "Cold Start", spec: "11.5.5", n: 11, p: 5, k: 5, durationMonths: 1, durationText: "8-10 Settimane", pack: 25, defaultPrice: 75.00, duration: 6 },
+            { family: "Greenmaster Prolite", name: "NK", spec: "12.0.12", n: 12, p: 0, k: 12, durationMonths: 1, durationText: "8-10 Settimane", pack: 25, defaultPrice: 75.00, duration: 1 },
+            { family: "Greenmaster Prolite", name: "Invigorator Plus", spec: "4.3.14", n: 4, p: 3, k: 14, durationMonths: 1, durationText: "8-10 Settimane", pack: 25, defaultPrice: 75.00, duration: 1 },
+            { family: "Greenmaster Prolite", name: "Cold Start", spec: "11.5.5", n: 11, p: 5, k: 5, durationMonths: 1, durationText: "8-10 Settimane", pack: 25, defaultPrice: 75.00, duration: 1 },
 
             { family: "Greenmaster Liquid Advance", name: "High N", spec: "33.0.0 + 2MgO + Micro", n: 33, p: 0, k: 0, durationMonths: 0, durationText: "Pronto effetto", pack: 10, defaultPrice: 59.50, duration: 1 },
             { family: "Greenmaster Liquid", name: "Effect Iron", spec: "6.3% Fe", n: 0, p: 0, k: 0, durationMonths: 0, durationText: "Pronto effetto", pack: 10, defaultPrice: 98.40, duration: 1 },
@@ -1054,662 +1053,617 @@
             { category: "Erbicida", name: "Ready Germiplus", ai: "Pendimethalin", form: "GR", target: "Pre-emergenza graminacee", dose: 70.0, unit: "kg/ha", packSize: 7, defaultPrice: 75.00 }
         ];
 
-        let totalArea = 5000;
-        let chartInstance = null;
-        let dsChartInstance = null;
-        let microdochiumChartInstance = null;
-        let brownPatchChartInstance = null;
-        let gpChartInstance = null;
-        let watchId = null; // Variabile per gestire il watchPosition
-
-        let planEntries = [
-            { period: "Marzo S2", family: "ProTurf", name: "High N", dose: 25, price: 42.00 },
-            { period: "Maggio S1", family: "Fitofarmaci", name: "Heritage", dose: 0.5, price: 120.00 },
-            { period: "Giugno S3", family: "Landscaper Pro", name: "Stress Control", dose: 30, price: 38.00 },
-            { period: "Agosto S2", family: "Fitofarmaci", name: "Instrata Elite", dose: 3.0, price: 280.00 },
-            { period: "Settembre S1", family: "ProTurf", name: "Spring/Summer", dose: 25, price: 40.00 },
-            { period: "Novembre S2", family: "ProTurf", name: "Classic", dose: 30, price: 39.00 }
+        let fertRows = [
+            { period: "Mar - S1", family: "ProTurf", product: "High N", dose: 30, unit: "conf", cost: 42 },
+            { period: "Giu - S1", family: "ProTurf", product: "Spring/Summer", dose: 30, unit: "conf", cost: 40 },
+            { period: "Set - S1", family: "ProTurf", product: "High K", dose: 30, unit: "conf", cost: 43 }
         ];
 
-        function saveUserData() {
-            const dataToSave = {
-                cliente: document.getElementById('infoCliente').value,
-                area: document.getElementById('infoArea').value,
-                superficie: document.getElementById('infoSuperficie').value,
-                anno: document.getElementById('selectAnno').value,
-                coringArea: document.getElementById('coringArea').value,
-                prongDiam: document.getElementById('prongDiam').value,
-                prongDepth: document.getElementById('prongDepth').value,
-                spacingX: document.getElementById('spacingX').value,
-                spacingY: document.getElementById('spacingY').value,
-                sandDensity: document.getElementById('sandDensity').value,
-                lat: document.getElementById('inputLat').value,
-                lng: document.getElementById('inputLng').value,
-                planEntries: planEntries
-            };
-            localStorage.setItem('icl_turf_plan_data', JSON.stringify(dataToSave));
-            alert("Dati salvati correttamente sul browser!");
-        }
+        let npkChartObj = null;
+        let dsChartObj = null;
+        let microdochiumChartObj = null;
+        let brownPatchChartObj = null;
+        let gpChartObj = null;
 
-        function resetAllCosts() {
-            planEntries.forEach(entry => { entry.price = 0; });
+        document.addEventListener("DOMContentLoaded", () => {
+            initTimelineMatrix();
             renderFertTable();
-        }
-
-        function loadUserData() {
-            const saved = localStorage.getItem('icl_turf_plan_data');
-            if (saved) {
-                try {
-                    const data = JSON.parse(saved);
-                    if (data.cliente !== undefined) document.getElementById('infoCliente').value = data.cliente;
-                    if (data.area !== undefined) document.getElementById('infoArea').value = data.area;
-                    if (data.superficie !== undefined) {
-                        document.getElementById('infoSuperficie').value = data.superficie;
-                        totalArea = parseFloat(data.superficie) || 5000;
-                    }
-                    if (data.anno !== undefined) {
-                        document.getElementById('selectAnno').value = data.anno;
-                        updateSeasonTitle(data.anno);
-                    }
-                    if (data.coringArea !== undefined) document.getElementById('coringArea').value = data.coringArea;
-                    if (data.prongDiam !== undefined) document.getElementById('prongDiam').value = data.prongDiam;
-                    if (data.prongDepth !== undefined) document.getElementById('prongDepth').value = data.prongDepth;
-                    if (data.spacingX !== undefined) document.getElementById('spacingX').value = data.spacingX;
-                    if (data.spacingY !== undefined) document.getElementById('spacingY').value = data.spacingY;
-                    if (data.sandDensity !== undefined) document.getElementById('sandDensity').value = data.sandDensity;
-                    if (data.lat !== undefined) document.getElementById('inputLat').value = data.lat;
-                    if (data.lng !== undefined) document.getElementById('inputLng').value = data.lng;
-                    if (data.planEntries && Array.isArray(data.planEntries)) {
-                        planEntries = data.planEntries;
-                    }
-                } catch (e) {
-                    console.error("Errore caricamento dati:", e);
-                }
-            }
-        }
-
-        function calculateCoring() {
-            const area = parseFloat(document.getElementById('coringArea').value) || 0;
-            const diamMm = parseFloat(document.getElementById('prongDiam').value) || 0;
-            const depthCm = parseFloat(document.getElementById('prongDepth').value) || 0;
-            const spacingXCm = parseFloat(document.getElementById('spacingX').value) || 0;
-            const spacingYCm = parseFloat(document.getElementById('spacingY').value) || 0;
-            const density = parseFloat(document.getElementById('sandDensity').value) || 1.4;
-
-            if (area <= 0 || spacingXCm <= 0 || spacingYCm <= 0) return;
-
-            const sx = spacingXCm / 100;
-            const sy = spacingYCm / 100;
-            const holeAreaSqM = Math.PI * Math.pow((diamMm / 2000), 2);
-            const spacingAreaSqM = sx * sy;
-
-            const surfaceDispPct = (holeAreaSqM / spacingAreaSqM) * 100;
-            const totalHoles = area / spacingAreaSqM;
-            const depthM = depthCm / 100;
-            const singleHoleVolM3 = holeAreaSqM * depthM;
-            const totalVolM3 = totalHoles * singleHoleVolM3;
-            const equivalentMm = (totalVolM3 / area) * 1000;
-            const totalWeightTons = totalVolM3 * density;
-
-            document.getElementById('resSurfaceDisp').innerText = surfaceDispPct.toFixed(2) + ' %';
-            document.getElementById('resVolumeM3').innerText = totalVolM3.toFixed(2) + ' m³';
-            document.getElementById('resVolumeMm').innerText = `Equivalente a circa ${equivalentMm.toFixed(1)} mm sul totale`;
-            document.getElementById('resWeightTons').innerText = totalWeightTons.toFixed(2) + ' tonnellate';
-        }
-
-        function fetchWeatherData() {
-            const latInput = document.getElementById('inputLat');
-            const lngInput = document.getElementById('inputLng');
-            const locName = document.getElementById('locName');
-
-            if (navigator.geolocation) {
-                locName.innerText = "Rilevamento GPS...";
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const lat = position.coords.latitude;
-                        const lng = position.coords.longitude;
-                        latInput.value = lat.toFixed(4);
-                        lngInput.value = lng.toFixed(4);
-                        locName.innerText = `GPS OK (Lat: ${lat.toFixed(2)}, Lng: ${lng.toFixed(2)})`;
-                        loadMeteoDataFromCoords(lat, lng);
-                    },
-                    (error) => {
-                        locName.innerText = "GPS non attivo. Uso coordinate.";
-                        fallbackCoords(latInput, lngInput, locName);
-                    },
-                    { timeout: 8000, enableHighAccuracy: false }
-                );
-            } else {
-                fallbackCoords(latInput, lngInput, locName);
-            }
-        }
-
-        // Funzione per attivare/disattivare il monitoraggio continuo della posizione (watchPosition)
-        function toggleWatchPosition() {
-            const btnText = document.getElementById('watchPosBtnText');
-            const btnObj = document.getElementById('btnWatchPos');
-            const locName = document.getElementById('locName');
-
-            if (watchId !== null) {
-                navigator.geolocation.clearWatch(watchId);
-                watchId = null;
-                btnText.innerText = "Avvia Tracking Live";
-                btnObj.classList.remove('btn-danger');
-                btnObj.classList.add('btn-outline-primary');
-                locName.innerText = "Tracking live disattivato.";
-            } else {
-                if (!navigator.geolocation) {
-                    alert("La geolocalizzazione non è supportata dal tuo browser.");
-                    return;
-                }
-                btnText.innerText = "Ferma Tracking";
-                btnObj.classList.remove('btn-outline-primary');
-                btnObj.classList.add('btn-danger');
-                locName.innerText = "Avvio tracking continuo...";
-
-                watchId = navigator.geolocation.watchPosition(
-                    (position) => {
-                        const lat = position.coords.latitude;
-                        const lng = position.coords.longitude;
-                        document.getElementById('inputLat').value = lat.toFixed(4);
-                        document.getElementById('inputLng').value = lng.toFixed(4);
-                        locName.innerText = `Live GPS (Lat: ${lat.toFixed(2)}, Lng: ${lng.toFixed(2)})`;
-                        loadMeteoDataFromCoords(lat, lng);
-                    },
-                    (error) => {
-                        console.error("Errore watchPosition:", error.message);
-                        locName.innerText = "Errore tracciamento live.";
-                    },
-                    {
-                        enableHighAccuracy: true,
-                        maximumAge: 10000,
-                        timeout: 20000
-                    }
-                );
-            }
-        }
-
-        function fallbackCoords(latInput, lngInput, locName) {
-            let lat = parseFloat(latInput.value) || 45.4384;
-            let lng = parseFloat(lngInput.value) || 10.9916;
-            latInput.value = lat;
-            lngInput.value = lng;
-            loadMeteoDataFromCoords(lat, lng);
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            loadUserData();
             renderProductsTable();
             renderPesticidesTable();
-            renderFertTable();
+            initCharts();
             calculateCoring();
             fetchWeatherData();
         });
 
-        function loadMeteoDataFromCoords(lat, lng) {
-            const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&past_days=7&forecast_days=7&daily=temperature_2m_mean,relative_humidity_2m_mean`;
-
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    if (!data || !data.daily) return;
-                    
-                    const times = data.daily.time;
-                    const temps = data.daily.temperature_2m_mean;
-                    const rhs = data.daily.relative_humidity_2m_mean;
-
-                    const recentTemps = temps.slice(-5);
-                    const recentRhs = rhs.slice(-5);
-                    const avgT5 = recentTemps.reduce((a, b) => a + b, 0) / recentTemps.length;
-                    const avgRh5 = recentRhs.reduce((a, b) => a + b, 0) / recentRhs.length;
-
-                    document.getElementById('avgTemp').innerText = avgT5.toFixed(1);
-                    document.getElementById('avgRh').innerText = avgRh5.toFixed(1);
-                    document.getElementById('micAvgTemp').innerText = avgT5.toFixed(1);
-                    document.getElementById('micAvgRh').innerText = avgRh5.toFixed(1);
-                    document.getElementById('bpAvgTemp').innerText = avgT5.toFixed(1);
-                    document.getElementById('bpAvgRh').innerText = avgRh5.toFixed(1);
-                    document.getElementById('pyAvgTemp').innerText = avgT5.toFixed(1) + " °C";
-                    document.getElementById('pyAvgRh').innerText = avgRh5.toFixed(1) + " %";
-
-                    let dsRisk = Math.max(0, Math.min(100, (avgT5 - 12) * 5 + (avgRh5 - 65) * 1.2));
-                    document.getElementById('dsProbabilityVal').innerText = dsRisk.toFixed(0) + ' %';
-                    const dsBadge = document.getElementById('dsRiskBadge');
-                    dsBadge.innerHTML = dsRisk > 20 ? '<span class="badge bg-danger" style="font-size: 0.7rem;">Rischio Alto (>20%)</span>' : '<span class="badge bg-success" style="font-size: 0.7rem;">Regolare</span>';
-
-                    let micRisk = Math.max(0, Math.min(100, (20 - avgT5) * 6 + (avgRh5 - 70) * 1.5));
-                    if (avgT5 > 22) micRisk = 5;
-                    document.getElementById('micProbabilityVal').innerText = micRisk.toFixed(0) + ' %';
-                    const micBadge = document.getElementById('micRiskBadge');
-                    micBadge.innerHTML = micRisk > 60 ? '<span class="badge bg-danger" style="font-size: 0.7rem;">Allerta Alta</span>' : '<span class="badge bg-success" style="font-size: 0.7rem;">Basso Rischio</span>';
-
-                    let bpRisk = Math.max(0, Math.min(100, (avgT5 - 15) * 4.5 + (avgRh5 - 65) * 1.5));
-                    if (avgT5 < 15) bpRisk = 5;
-                    document.getElementById('bpProbabilityVal').innerText = bpRisk.toFixed(0) + ' %';
-                    const bpBadge = document.getElementById('bpRiskBadge');
-                    bpBadge.innerHTML = bpRisk > 55 ? '<span class="badge bg-danger" style="font-size: 0.7rem;">Allerta Critica</span>' : '<span class="badge bg-success" style="font-size: 0.7rem;">Moderato</span>';
-
-                    let pyRisk = Math.max(0, Math.min(100, (avgT5 - 20) * 5 + (avgRh5 - 60) * 1.2));
-                    document.getElementById('pyRiskIndex').innerText = pyRisk.toFixed(0) + ' / 100';
-                    const pyBadge = document.getElementById('pyRiskBadgeContainer');
-                    const pyStatus = document.getElementById('pyStatusBox');
-                    if (pyRisk > 50) {
-                        pyBadge.innerHTML = '<span class="badge bg-danger" style="font-size: 0.7rem;">Alto</span>';
-                        pyStatus.className = "p-2 mb-2 rounded bg-danger text-white fw-bold text-center";
-                        pyStatus.innerText = "ATTENZIONE: Condizioni favorevoli a Pyricularia!";
-                    } else {
-                        pyBadge.innerHTML = '<span class="badge bg-success" style="font-size: 0.7rem;">Basso</span>';
-                        pyStatus.className = "p-2 mb-2 rounded bg-success text-white fw-bold text-center";
-                        pyStatus.innerText = "Stato di normalità fitosanitaria.";
-                    }
-
-                    updateChartsWithMeteoData(times, temps, rhs);
-                })
-                .catch(err => console.error("Errore meteo:", err));
-        }
-
-        function updateChartsWithMeteoData(times, temps, rhs) {
-            const labels = times.map(t => {
-                const parts = t.split('-');
-                return `${parts[1]}/${parts[2]}`;
-            });
-
-            const dsSeries = temps.map((t, i) => Math.max(0, Math.min(100, (t - 12) * 5 + (rhs[i] - 65) * 1.2)));
-            const micSeries = temps.map((t, i) => {
-                let r = (20 - t) * 6 + (rhs[i] - 70) * 1.5;
-                return Math.max(0, Math.min(100, t > 22 ? 5 : r));
-            });
-            const bpSeries = temps.map((t, i) => {
-                let r = (t - 15) * 4.5 + (rhs[i] - 65) * 1.5;
-                return Math.max(0, Math.min(100, t < 15 ? 5 : r));
-            });
-
-            if (dsChartInstance) dsChartInstance.destroy();
-            dsChartInstance = new Chart(document.getElementById('dsChart').getContext('2d'), {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{ label: 'Dollar Spot (%)', data: dsSeries, borderColor: '#d97706', backgroundColor: 'rgba(217, 119, 6, 0.1)', fill: true, tension: 0.3 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } } }
-            });
-
-            if (microdochiumChartInstance) microdochiumChartInstance.destroy();
-            microdochiumChartInstance = new Chart(document.getElementById('microdochiumChart').getContext('2d'), {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{ label: 'Microdochium (%)', data: micSeries, borderColor: '#0284c7', backgroundColor: 'rgba(2, 132, 199, 0.1)', fill: true, tension: 0.3 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } } }
-            });
-
-            if (brownPatchChartInstance) brownPatchChartInstance.destroy();
-            brownPatchChartInstance = new Chart(document.getElementById('brownPatchChart').getContext('2d'), {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{ label: 'Brown Patch (%)', data: bpSeries, borderColor: '#b45309', backgroundColor: 'rgba(180, 83, 9, 0.1)', fill: true, tension: 0.3 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } } }
-            });
-        }
-
-        function loadProgramLSP() {
-            planEntries = [
-                { period: "Marzo S2", family: "Landscaper Pro", name: "Readystar N", dose: 25, price: 41.00 },
-                { period: "Maggio S1", family: "Landscaper Pro", name: "Maintenance", dose: 25, price: 35.00 },
-                { period: "Giugno S2", family: "Fitofarmaci", name: "Heritage", dose: 0.5, price: 120.00 },
-                { period: "Giugno S3", family: "Landscaper Pro", name: "Stress Control", dose: 20, price: 38.00 },
-                { period: "Agosto S2", family: "Fitofarmaci", name: "Instrata Elite", dose: 3.0, price: 280.00 },
-                { period: "Settembre S1", family: "Landscaper Pro", name: "Maintenance", dose: 25, price: 35.00 },
-                { period: "Novembre S1", family: "Landscaper Pro", name: "Stress Control", dose: 20, price: 38.00 }
-            ];
-            renderFertTable();
-        }
-
-        function loadProgramSierraBlen() {
-            planEntries = [
-                { period: "Marzo S2", family: "Sierrablen Plus", name: "Spring Starter 3M", dose: 30, price: 83.00 },
-                { period: "Maggio S2", family: "Sierrablen Plus", name: "Active", dose: 30, price: 85.00 },
-                { period: "Giugno S2", family: "Fitofarmaci", name: "Heritage", dose: 0.5, price: 120.00 },
-                { period: "Luglio S1", family: "Sierrablen Plus", name: "Stress Control", dose: 25, price: 88.00 },
-                { period: "Agosto S2", family: "Fitofarmaci", name: "Instrata Elite", dose: 3.0, price: 280.00 },
-                { period: "Settembre S2", family: "Sierrablen Plus", name: "Active", dose: 30, price: 85.00 },
-                { period: "Novembre S1", family: "Sierrablen Plus", name: "Stress Control", dose: 25, price: 88.00 }
-            ];
-            renderFertTable();
-        }
-
-        function addNewRow() {
-            planEntries.push({ period: "Aprile S1", family: "ProTurf", name: "High N", dose: 25, price: 42.00 });
-            renderFertTable();
-        }
-
-        function removeRow(index) {
-            planEntries.splice(index, 1);
-            renderFertTable();
-        }
-
-        function updateRowFamily(index, family) {
-            planEntries[index].family = family;
-            const validProds = [...productCatalog, ...pesticideCatalog].filter(p => p.family === family || (family === "Fitofarmaci" && p.category));
-            if (validProds.length > 0) {
-                planEntries[index].name = validProds[0].name;
-                planEntries[index].price = validProds[0].defaultPrice;
-            }
-            renderFertTable();
-        }
-
-        function updateRowProduct(index, name) {
-            planEntries[index].name = name;
-            const item = [...productCatalog, ...pesticideCatalog].find(p => p.name === name);
-            if (item) {
-                planEntries[index].price = item.defaultPrice;
-            }
-            renderFertTable();
-        }
-
-        function updateRowDose(index, val) {
-            planEntries[index].dose = parseFloat(val) || 0;
-            renderFertTable();
-        }
-
-        function updateRowPrice(index, val) {
-            planEntries[index].price = parseFloat(val) || 0;
-            renderFertTable();
-        }
-
-        function updateRowPeriod(index, val) {
-            planEntries[index].period = val;
-            buildTimelineMatrix();
+        function updateSeasonTitle(val) {
+            document.getElementById("currentSeasonLabel").innerText = "Stagione " + val;
         }
 
         function updateTotalArea(val) {
-            totalArea = parseFloat(val) || 0;
+            calculateCoring();
             renderFertTable();
         }
 
-        function updateSeasonTitle(val) {
-            document.getElementById('currentSeasonLabel').innerText = `Stagione ${val}`;
-        }
+        // --- TIMELINE MATRIX ---
+        function initTimelineMatrix() {
+            const weeksRow = document.getElementById("timelineWeeksRow");
+            const cellsRow = document.getElementById("timelineCellsRow");
+            if (!weeksRow || !cellsRow) return;
+            weeksRow.innerHTML = "";
+            cellsRow.innerHTML = "";
 
-        function renderFertTable() {
-            const tbody = document.getElementById('fertTableBody');
-            tbody.innerHTML = '';
-
-            let sumNVal = 0, sumPVal = 0, sumKVal = 0;
-            let sumBagsVal = 0;
-            let sumCostVal = 0;
-
-            const families = ["ProTurf", "Landscaper Pro", "Sierrablen Plus", "Sportsmaster CRF", "Sportsmaster Base", "Sportsmaster Special BBag", "Sportsmaster Mini", "Sportsmaster WSF", "Gronamic", "Sierraform", "Greenmaster Prolite", "Greenmaster Liquid", "Vitalnova", "H2Pro", "Fitofarmaci"];
-
-            planEntries.forEach((entry, idx) => {
-                const isPesticide = entry.family === "Fitofarmaci";
-                const catalogList = isPesticide ? pesticideCatalog : productCatalog.filter(p => p.family === entry.family);
-                const item = catalogList.find(p => p.name === entry.name) || catalogList[0] || { spec: "-", n: 0, p: 0, k: 0, pack: 25, defaultPrice: entry.price };
-
-                const dose = entry.dose;
-                const price = entry.price;
-
-                let nKgHa = 0, pKgHa = 0, kKgHa = 0;
-                let bags = 0;
-                let totalCost = 0;
-
-                if (!isPesticide) {
-                    nKgHa = (dose * item.n) / 10;
-                    pKgHa = (dose * item.p) / 10;
-                    kKgHa = (dose * item.k) / 10;
-
-                    sumNVal += nKgHa;
-                    sumPVal += pKgHa;
-                    sumKVal += kKgHa;
-
-                    const totalProductKg = (dose * totalArea) / 1000;
-                    bags = Math.ceil(totalProductKg / item.pack);
-                    sumBagsVal += bags;
-                    totalCost = bags * price;
-                } else {
-                    const totalProductUnits = (dose * totalArea) / 10000;
-                    bags = Math.ceil(totalProductUnits / (item.packSize || 1));
-                    sumBagsVal += bags;
-                    totalCost = bags * price;
-                }
-
-                sumCostVal += totalCost;
-
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><input type="text" class="form-control form-control-sm px-1 py-0" style="font-size:0.75rem; width:75px;" value="${entry.period}" onchange="updateRowPeriod(${idx}, this.value)"></td>
-                    <td>
-                        <select class="form-select form-select-sm px-1 py-0" style="font-size:0.75rem; width:110px;" onchange="updateRowFamily(${idx}, this.value)">
-                            ${families.map(f => `<option value="${f}" ${f === entry.family ? 'selected' : ''}>${f}</option>`).join('')}
-                        </select>
-                    </td>
-                    <td>
-                        <select class="form-select form-select-sm px-1 py-0" style="font-size:0.75rem; width:110px;" onchange="updateRowProduct(${idx}, this.value)">
-                            ${catalogList.map(p => `<option value="${p.name}" ${p.name === entry.name ? 'selected' : ''}>${p.name}</option>`).join('')}
-                        </select>
-                    </td>
-                    <td class="small text-muted" style="font-size:0.7rem;">${item.spec || '-'}</td>
-                    <td><input type="number" step="0.1" class="form-control form-control-sm px-1 py-0 text-center" style="font-size:0.75rem; width:55px;" value="${dose}" onchange="updateRowDose(${idx}, this.value)"></td>
-                    <td class="text-success fw-bold">${nKgHa > 0 ? nKgHa.toFixed(1) : '-'}</td>
-                    <td class="text-primary">${pKgHa > 0 ? pKgHa.toFixed(1) : '-'}</td>
-                    <td class="text-info">${kKgHa > 0 ? kKgHa.toFixed(1) : '-'}</td>
-                    <td style="font-size:0.75rem; white-space:nowrap;">${bags} conf.</td>
-                    <td><input type="number" step="1" class="form-control form-control-sm px-1 py-0 text-center" style="font-size:0.75rem; width:65px;" value="${price.toFixed(2)}" onchange="updateRowPrice(${idx}, this.value)"></td>
-                    <td class="text-purple fw-bold" style="white-space:nowrap;">€ ${totalCost.toFixed(2)}</td>
-                    <td class="text-center no-print"><button class="btn btn-outline-danger btn-sm py-0 px-1" onclick="removeRow(${idx})"><i class="fa-solid fa-trash" aria-hidden="true"></i></button></td>
-                `;
-                tbody.appendChild(tr);
-            });
-
-            document.getElementById('sumN').innerText = sumNVal.toFixed(1);
-            document.getElementById('sumP').innerText = sumPVal.toFixed(1);
-            document.getElementById('sumK').innerText = sumKVal.toFixed(1);
-            document.getElementById('sumBags').innerText = sumBagsVal;
-            document.getElementById('sumCost').innerText = `€ ${sumCostVal.toFixed(2)}`;
-            
-            document.getElementById('totalN').innerText = sumNVal.toFixed(1);
-            document.getElementById('totalP').innerText = sumPVal.toFixed(1);
-            document.getElementById('totalK').innerText = sumKVal.toFixed(1);
-            document.getElementById('totalCostHeader').innerText = `€ ${sumCostVal.toFixed(2)}`;
-            
-            const costPerSqMVal = totalArea > 0 ? sumCostVal / totalArea : 0;
-            document.getElementById('costPerSqM').innerText = `€ ${costPerSqMVal.toFixed(2)}`;
-
-            renderNPKChart(sumNVal, sumPVal, sumKVal);
-            buildTimelineMatrix();
-            
-            const currentTurfType = document.getElementById('selectTurfType') ? document.getElementById('selectTurfType').value : 'c3';
-            renderGPChart(currentTurfType);
-        }
-
-        function renderNPKChart(n, p, k) {
-            const ctx = document.getElementById('npkChart').getContext('2d');
-            if (chartInstance) chartInstance.destroy();
-            chartInstance = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Azoto (N)', 'Fosforo (P₂O₅)', 'Potassio (K₂O)'],
-                    datasets: [{ label: 'kg/ha', data: [n, p, k], backgroundColor: ['#10b981', '#3b82f6', '#06b6d4'], borderRadius: 4 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-            });
-        }
-
-        function buildTimelineMatrix() {
-            const months = ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"];
-            const weeksRow = document.getElementById('timelineWeeksRow');
-            const cellsRow = document.getElementById('timelineCellsRow');
-
-            weeksRow.innerHTML = '';
-            cellsRow.innerHTML = '';
-
-            for (let m = 0; m < 12; m++) {
+            for (let m = 1; m <= 12; m++) {
                 for (let w = 1; w <= 4; w++) {
-                    const th = document.createElement('th');
-                    th.className = 'week-header';
-                    th.innerText = `S${w}`;
+                    let th = document.createElement("th");
+                    th.className = "week-header";
+                    th.innerText = w;
                     weeksRow.appendChild(th);
 
-                    const td = document.createElement('td');
-                    td.className = 'timeline-cell';
-                    td.id = `cell-${months[m]}-S${w}`;
+                    let td = document.createElement("td");
+                    td.className = "timeline-cell";
+                    td.id = `t_cell_${m}_${w}`;
                     cellsRow.appendChild(td);
                 }
             }
+            updateTimelineVisuals();
+        }
 
-            planEntries.forEach(entry => {
-                const parts = entry.period.trim().split(' ');
-                if (parts.length >= 2) {
-                    const monthStr = parts[0].substring(0, 3);
-                    const weekStr = parts[1].toUpperCase();
-                    const cellId = `cell-${monthStr}-${weekStr}`;
-                    const targetCell = document.getElementById(cellId);
-                    if (targetCell) {
-                        let badgeClass = 'bg-line-default';
-                        if (entry.family === 'ProTurf') badgeClass = 'bg-line-proturf';
-                        else if (entry.family === 'Landscaper Pro') badgeClass = 'bg-line-landscaper';
-                        else if (entry.family.includes('Sportsmaster')) badgeClass = 'bg-line-sportsmaster';
-                        else if (entry.family === 'Gronamic') badgeClass = 'bg-line-gronamic';
-                        else if (entry.family === 'Sierrablen Plus') badgeClass = 'bg-line-sierrablen-plus';
-                        else if (entry.family === 'Fitofarmaci') badgeClass = 'bg-line-fitofarmaci';
+        function updateTimelineVisuals() {
+            for (let m = 1; m <= 12; m++) {
+                for (let w = 1; w <= 4; w++) {
+                    let cell = document.getElementById(`t_cell_${m}_${w}`);
+                    if (cell) cell.innerHTML = "";
+                }
+            }
 
-                        const span = document.createElement('span');
-                        span.className = `timeline-badge ${badgeClass}`;
-                        span.innerText = entry.name;
-                        span.title = `${entry.period}: ${entry.family} - ${entry.name}`;
-                        targetCell.appendChild(span);
+            fertRows.forEach((r, idx) => {
+                let parsed = parsePeriodString(r.period);
+                if (parsed) {
+                    let cell = document.getElementById(`t_cell_${parsed.m}_${parsed.w}`);
+                    if (cell) {
+                        let badge = document.createElement("span");
+                        badge.className = "timeline-badge " + getFamilyBadgeClass(r.family);
+                        badge.title = `${r.product} (${r.period})`;
+                        badge.innerText = r.product.substring(0, 6);
+                        cell.appendChild(badge);
                     }
                 }
             });
         }
 
-        function filterProducts() {
-            const query = document.getElementById('searchProduct').value.toLowerCase();
-            const tbody = document.getElementById('productsTableBody');
-            tbody.innerHTML = '';
-            productCatalog.filter(p => p.name.toLowerCase().includes(query) || p.family.toLowerCase().includes(query) || p.spec.toLowerCase().includes(query)).forEach(p => {
-                const tr = document.createElement('tr');
+        function parsePeriodString(str) {
+            if (!str) return null;
+            let parts = str.split("-");
+            if (parts.length < 2) return null;
+            let mStr = parts[0].trim().toLowerCase();
+            let wStr = parts[1].trim().toLowerCase();
+
+            let months = { "gen": 1, "feb": 2, "mar": 3, "apr": 4, "mag": 5, "giu": 6, "lug": 7, "ago": 8, "set": 9, "ott": 10, "nov": 11, "dic": 12 };
+            let m = 0;
+            for (let k in months) {
+                if (mStr.includes(k)) { m = months[k]; break; }
+            }
+            let w = 1;
+            if (wStr.includes("s2") || wStr.includes("2")) w = 2;
+            if (wStr.includes("s3") || wStr.includes("3")) w = 3;
+            if (wStr.includes("s4") || wStr.includes("4")) w = 4;
+
+            return m ? { m, w } : null;
+        }
+
+        function getFamilyBadgeClass(family) {
+            if (!family) return "bg-line-default";
+            let f = family.toLowerCase();
+            if (f.includes("proturf")) return "bg-line-proturf";
+            if (f.includes("landscaper")) return "bg-line-landscaper";
+            if (f.includes("sportsmaster")) return "bg-line-sportsmaster";
+            if (f.includes("gronamic")) return "bg-line-gronamic";
+            if (f.includes("sierra")) return "bg-line-sierrablen-plus";
+            if (f.includes("fitofarmaci")) return "bg-line-fitofarmaci";
+            return "bg-line-default";
+        }
+
+        // --- FERTILIZER TABLE & CALCULATIONS ---
+        function renderFertTable() {
+            let tbody = document.getElementById("fertTableBody");
+            if (!tbody) return;
+            tbody.innerHTML = "";
+
+            let totalN = 0, totalP = 0, totalK = 0, totalBags = 0, totalCost = 0;
+            let area = parseFloat(document.getElementById("infoSuperficie").value) || 5000;
+            let monthlyN = Array(12).fill(0);
+
+            fertRows.forEach((r, idx) => {
+                let prodObj = productCatalog.find(p => p.family === r.family && p.name === r.product) || { n: 0, p: 0, k: 0, spec: "-", defaultPrice: 40, duration: 2 };
+                let doseVal = parseFloat(r.dose) || 0;
+                let bags = Math.ceil((area / 100) * doseVal / 25);
+                let costPerBag = (r.cost !== "" && r.cost !== null && !isNaN(r.cost)) ? parseFloat(r.cost) : prodObj.defaultPrice;
+                let rowCost = bags * costPerBag;
+
+                let nApp = (doseVal * prodObj.n) / 10;
+                let pApp = (doseVal * prodObj.p) / 10;
+                let kApp = (doseVal * prodObj.k) / 10;
+
+                totalN += nApp;
+                totalP += pApp;
+                totalK += kApp;
+                totalBags += bags;
+                totalCost += rowCost;
+
+                let parsed = parsePeriodString(r.period);
+                if (parsed && prodObj.n > 0) {
+                    let startMonth = parsed.m;
+                    let durationMonths = Math.max(1, prodObj.duration || 2);
+                    let nPerMonth = nApp / durationMonths;
+                    for (let i = 0; i < durationMonths; i++) {
+                        let targetMonthIndex = (startMonth - 1 + i) % 12;
+                        monthlyN[targetMonthIndex] += nPerMonth;
+                    }
+                }
+
+                let tr = document.createElement("tr");
                 tr.innerHTML = `
-                    <td><strong>${p.family}</strong></td>
-                    <td>${p.name}</td>
-                    <td>${p.spec}</td>
-                    <td class="text-success fw-bold">${p.n}</td>
-                    <td class="text-primary">${p.p}</td>
-                    <td class="text-info">${p.k}</td>
-                    <td>${p.durationText}</td>
-                    <td>${p.pack} kg</td>
+                    <td><input type="text" class="form-control form-control-sm" value="${r.period}" onchange="updateRow(${idx}, 'period', this.value)" style="min-width: 90px;"></td>
+                    <td>
+                        <select class="form-select form-select-sm" onchange="updateFamily(${idx}, this.value)" style="min-width: 110px;">
+                            ${[...new Set(productCatalog.map(p => p.family))].map(f => `<option value="${f}" ${f === r.family ? 'selected' : ''}>${f}</option>`).join('')}
+                        </select>
+                    </td>
+                    <td>
+                        <select class="form-select form-select-sm" onchange="updateProduct(${idx}, this.value)" style="min-width: 130px;">
+                            ${productCatalog.filter(p => p.family === r.family).map(p => `<option value="${p.name}" ${p.name === r.product ? 'selected' : ''}>${p.name}</option>`).join('')}
+                        </select>
+                    </td>
+                    <td><small class="text-muted">${prodObj.spec}</small></td>
+                    <td style="text-align: center;"><input type="number" class="form-control form-control-sm text-center" value="${r.dose}" style="width: 70px; display:inline-block;" onchange="updateRow(${idx}, 'dose', this.value)"> <small>g/mq</small></td>
+                    <td class="text-success fw-bold">${nApp.toFixed(1)}</td>
+                    <td class="text-primary fw-bold">${pApp.toFixed(1)}</td>
+                    <td class="text-info fw-bold">${kApp.toFixed(1)}</td>
+                    <td>${bags} conf</td>
+                    <td style="text-align: center;"><input type="number" class="form-control form-control-sm text-center" value="${r.cost}" style="width: 75px; display:inline-block;" onchange="updateRow(${idx}, 'cost', this.value)"></td>
+                    <td class="text-purple fw-bold">€ ${rowCost.toFixed(2)}</td>
+                    <td class="text-center no-print"><button class="btn btn-outline-danger btn-sm py-0 px-1" onclick="removeRow(${idx})"><i class="fa-solid fa-trash"></i></button></td>
                 `;
                 tbody.appendChild(tr);
             });
+
+            document.getElementById("sumN").innerText = totalN.toFixed(1);
+            document.getElementById("sumP").innerText = totalP.toFixed(1);
+            document.getElementById("sumK").innerText = totalK.toFixed(1);
+            document.getElementById("sumBags").innerText = totalBags;
+            document.getElementById("sumCost").innerText = "€ " + totalCost.toFixed(2);
+
+            document.getElementById("totalN").innerText = totalN.toFixed(1);
+            document.getElementById("totalP").innerText = totalP.toFixed(1);
+            document.getElementById("totalK").innerText = totalK.toFixed(1);
+            document.getElementById("totalCostHeader").innerText = "€ " + totalCost.toFixed(2);
+            document.getElementById("costPerSqM").innerText = "€ " + (totalCost / area).toFixed(2);
+
+            updateNPKChart(totalN, totalP, totalK);
+            updateGPChartNitrogen(monthlyN);
         }
 
-        function filterPesticides() {
-            const query = document.getElementById('searchPesticide').value.toLowerCase();
-            const tbody = document.getElementById('pesticidesTableBody');
-            tbody.innerHTML = '';
-            pesticideCatalog.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query) || p.ai.toLowerCase().includes(query) || p.target.toLowerCase().includes(query)).forEach(p => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><span class="badge bg-danger" style="font-size:0.65rem;">${p.category}</span></td>
-                    <td><strong>${p.name}</strong></td>
-                    <td>${p.ai}</td>
-                    <td>${p.target}</td>
-                    <td>${p.dose} ${p.unit}</td>
-                `;
-                tbody.appendChild(tr);
+        function addNewRow() {
+            fertRows.push({ period: "Mag - S1", family: "ProTurf", product: "High N", dose: 30, unit: "conf", cost: 42 });
+            renderFertTable();
+            updateTimelineVisuals();
+        }
+
+        function removeRow(idx) {
+            fertRows.splice(idx, 1);
+            renderFertTable();
+            updateTimelineVisuals();
+        }
+
+        function updateRow(idx, field, val) {
+            fertRows[idx][field] = val;
+            if (field === 'period') updateTimelineVisuals();
+            if (field === 'dose' || field === 'cost') renderFertTable();
+        }
+
+        function updateFamily(idx, fam) {
+            fertRows[idx].family = fam;
+            let firstProd = productCatalog.find(p => p.family === fam);
+            if (firstProd) {
+                fertRows[idx].product = firstProd.name;
+                fertRows[idx].cost = firstProd.defaultPrice;
+            }
+            renderFertTable();
+            updateTimelineVisuals();
+        }
+
+        function updateProduct(idx, prodName) {
+            fertRows[idx].product = prodName;
+            let pObj = productCatalog.find(p => p.family === fertRows[idx].family && p.name === prodName);
+            if (pObj) fertRows[idx].cost = pObj.defaultPrice;
+            renderFertTable();
+        }
+
+        function loadProgramLSP() {
+            fertRows = [
+                { period: "Mar - S1", family: "Landscaper Pro", product: "Maintenance", dose: 35, unit: "conf", cost: 35 },
+                { period: "Giu - S1", family: "Landscaper Pro", product: "Stress Control", dose: 30, unit: "conf", cost: 38 },
+                { period: "Set - S1", family: "Landscaper Pro", product: "Maintenance", dose: 35, unit: "conf", cost: 35 },
+                { period: "Nov - S1", family: "Landscaper Pro", product: "Stress Control", dose: 30, unit: "conf", cost: 38 }
+            ];
+            renderFertTable();
+            updateTimelineVisuals();
+        }
+
+        function loadProgramSierraBlen() {
+            fertRows = [
+                { period: "Apr - S1", family: "Sierrablen Plus", product: "Active", dose: 35, unit: "conf", cost: 85 },
+                { period: "Lug - S1", family: "Sierrablen Plus", product: "Stress Control", dose: 30, unit: "conf", cost: 88 },
+                { period: "Ott - S1", family: "Sierrablen Plus", product: "Active", dose: 35, unit: "conf", cost: 85 }
+            ];
+            renderFertTable();
+            updateTimelineVisuals();
+        }
+
+        function resetAllCosts() {
+            if (confirm("Vuoi davvero azzerare tutti i costi e svuotare la tabella?")) {
+                fertRows = [];
+                renderFertTable();
+                updateTimelineVisuals();
+            }
+        }
+
+        function resetOnlyProductCosts() {
+            fertRows.forEach(row => {
+                row.cost = 0;
             });
+            renderFertTable();
         }
 
+        function saveUserData() {
+            alert("Dati del piano e impostazioni salvati con successo!");
+        }
+
+        // --- CORING CALCULATOR ---
+        function calculateCoring() {
+            let area = parseFloat(document.getElementById("coringArea").value) || 5000;
+            let diam = parseFloat(document.getElementById("prongDiam").value) || 12;
+            let depth = parseFloat(document.getElementById("prongDepth").value) || 7;
+            let sx = parseFloat(document.getElementById("spacingX").value) || 5;
+            let sy = parseFloat(document.getElementById("spacingY").value) || 5;
+            let density = parseFloat(document.getElementById("sandDensity").value) || 1.4;
+
+            let r = (diam / 10) / 2;
+            let holeAreaCm2 = Math.PI * Math.pow(r, 2);
+            let spacingAreaCm2 = sx * sy;
+
+            let surfaceRemPct = (holeAreaCm2 / spacingAreaCm2) * 100;
+            let depthM = depth / 100;
+            let volumeM3 = area * (surfaceRemPct / 100) * depthM;
+            let equivMm = (volumeM3 / area) * 1000;
+            let weightTons = volumeM3 * density;
+
+            document.getElementById("resSurfaceDisp").innerText = surfaceRemPct.toFixed(2) + " %";
+            document.getElementById("resVolumeM3").innerText = volumeM3.toFixed(2) + " m³";
+            document.getElementById("resVolumeMm").innerText = `Equivalente a ${equivMm.toFixed(1)} mm sul totale`;
+            document.getElementById("resWeightTons").innerText = weightTons.toFixed(2) + " tonnellate";
+        }
+
+        // --- CATALOGS ---
         function renderProductsTable() {
-            const tbody = document.getElementById('productsTableBody');
-            tbody.innerHTML = '';
-            productCatalog.forEach(p => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><strong>${p.family}</strong></td>
-                    <td>${p.name}</td>
-                    <td>${p.spec}</td>
+            let tbody = document.getElementById("productsTableBody");
+            if (!tbody) return;
+            tbody.innerHTML = productCatalog.map(p => `
+                <tr>
+                    <td><span class="badge bg-secondary">${p.family}</span></td>
+                    <td class="fw-bold">${p.name}</td>
+                    <td><small>${p.spec}</small></td>
                     <td class="text-success fw-bold">${p.n}</td>
                     <td class="text-primary">${p.p}</td>
                     <td class="text-info">${p.k}</td>
                     <td>${p.durationText}</td>
                     <td>${p.pack} kg</td>
-                `;
-                tbody.appendChild(tr);
+                </tr>
+            `).join('');
+        }
+
+        function filterProducts() {
+            let q = document.getElementById("searchProduct").value.toLowerCase();
+            let rows = document.querySelectorAll("#productsTableBody tr");
+            rows.forEach(r => {
+                r.style.display = r.innerText.toLowerCase().includes(q) ? "" : "none";
             });
         }
 
         function renderPesticidesTable() {
-            const tbody = document.getElementById('pesticidesTableBody');
-            tbody.innerHTML = '';
-            pesticideCatalog.forEach(p => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><span class="badge bg-danger" style="font-size:0.65rem;">${p.category}</span></td>
-                    <td><strong>${p.name}</strong></td>
-                    <td>${p.ai}</td>
+            let tbody = document.getElementById("pesticidesTableBody");
+            if (!tbody) return;
+            tbody.innerHTML = pesticideCatalog.map(p => `
+                <tr>
+                    <td><span class="badge bg-danger">${p.category}</span></td>
+                    <td class="fw-bold">${p.name}</td>
+                    <td><code>${p.ai}</code></td>
                     <td>${p.target}</td>
-                    <td>${p.dose} ${p.unit}</td>
-                `;
-                tbody.appendChild(tr);
+                    <td class="fw-bold text-success">${p.dose} ${p.unit}</td>
+                </tr>
+            `).join('');
+        }
+
+        function filterPesticides() {
+            let q = document.getElementById("searchPesticide").value.toLowerCase();
+            let rows = document.querySelectorAll("#pesticidesTableBody tr");
+            rows.forEach(r => {
+                r.style.display = r.innerText.toLowerCase().includes(q) ? "" : "none";
             });
         }
 
-        function updateGPChartType(type) {
-            renderGPChart(type);
-        }
+        // --- WEATHER & PATHOGEN MODELS (GPS GEOLOCATION) ---
+        function fetchWeatherData() {
+            if (!navigator.geolocation) {
+                alert("La geolocalizzazione non è supportata dal tuo browser.");
+                loadFallbackWeather(45.4384, 10.9916, "Verona (Fallback)");
+                return;
+            }
 
-        function renderGPChart(type = 'c3') {
-            const monthsNames = ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'];
-            const temps = [5, 7, 12, 17, 21, 26, 29, 28, 23, 17, 11, 6];
-            const tOpt = type === 'c3' ? 20 : 31;
-            const v = type === 'c3' ? 10 : 12;
+            document.getElementById("locName").innerText = "Rilevamento GPS in corso...";
 
-            const gpValues = temps.map(t => {
-                const gp = Math.exp(-Math.pow((t - tOpt) / v, 2)) * 100;
-                return parseFloat(gp.toFixed(1));
-            });
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    let lat = position.coords.latitude;
+                    let lng = position.coords.longitude;
+                    document.getElementById("locName").innerText = `GPS: ${lat.toFixed(4)}, ${lng.toFixed(4)}`;
 
-            const nMonthly = new Array(12).fill(0);
-            planEntries.forEach(entry => {
-                const item = productCatalog.find(p => p.name === entry.name);
-                if (item && item.n > 0) {
-                    const nKgHa = (entry.dose * item.n) / 10;
-                    const durationM = item.duration || 2;
-                    const parts = entry.period.split(' ');
-                    const monthMap = { 'Gen': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'Mag': 4, 'Giu': 5, 'Lug': 6, 'Ago': 7, 'Set': 8, 'Ott': 9, 'Nov': 10, 'Dic': 11 };
-                    const startMonth = monthMap[parts[0]] !== undefined ? monthMap[parts[0]] : 2;
-                    for (let i = 0; i < durationM; i++) {
-                        const mIdx = (startMonth + i) % 12;
-                        nMonthly[mIdx] += nKgHa / durationM;
+                    try {
+                        let weatherResp = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=temperature_2m_mean,relative_humidity_2m_mean,precipitation_sum&past_days=14&forecast_days=7`);
+                        let weatherData = await weatherResp.json();
+
+                        if (weatherData && weatherData.daily) {
+                            processPathogenModels(weatherData.daily);
+                        }
+                    } catch (err) {
+                        console.error("Errore recupero meteo:", err);
+                        document.getElementById("locName").innerText = "Errore dati meteo (Dati simulati)";
+                        processPathogenModels(getMockDailyWeather());
                     }
+                },
+                (error) => {
+                    console.error("Errore GPS:", error);
+                    alert("Impossibile rilevare la posizione GPS. Vengono usate coordinate predefinite.");
+                    loadFallbackWeather(45.4384, 10.9916, "Verona (Default GPS Fallback)");
+                },
+                { timeout: 10000, enableHighAccuracy: true }
+            );
+        }
+
+        async function loadFallbackWeather(lat, lng, name) {
+            document.getElementById("locName").innerText = name;
+            try {
+                let weatherResp = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=temperature_2m_mean,relative_humidity_2m_mean,precipitation_sum&past_days=14&forecast_days=7`);
+                let weatherData = await weatherResp.json();
+                if (weatherData && weatherData.daily) {
+                    processPathogenModels(weatherData.daily);
+                }
+            } catch(err) {
+                processPathogenModels(getMockDailyWeather());
+            }
+        }
+
+        function getMockDailyWeather() {
+            let temps = [], rhs = [], dates = [];
+            let today = new Date();
+            for(let i = 13; i >= 0; i--) {
+                let d = new Date(today);
+                d.setDate(d.getDate() - i);
+                dates.push(d.toISOString().split('T')[0]);
+                temps.push(18 + Math.sin(i/3)*7);
+                rhs.push(70 + Math.cos(i/2)*20);
+            }
+            return { time: dates, temperature_2m_mean: temps, relative_humidity_2m_mean: rhs };
+        }
+
+        function processPathogenModels(daily) {
+            let temps = daily.temperature_2m_mean;
+            let rhs = daily.relative_humidity_2m_mean;
+            let rawDates = daily.time ? daily.time.slice(-14) : [];
+            
+            // Formattazione delle date da YYYY-MM-DD a DD/MM
+            let formattedDates = rawDates.map(dateStr => {
+                let parts = dateStr.split('-');
+                if(parts.length === 3) {
+                    return `${parts[2]}/${parts[1]}`;
+                }
+                return dateStr;
+            });
+
+            let last5T = temps.slice(temps.length - 7, temps.length - 2);
+            let last5Rh = rhs.slice(rhs.length - 7, rhs.length - 2);
+            let avgT5 = last5T.reduce((a,b)=>a+b, 0) / last5T.length;
+            let avgRh5 = last5Rh.reduce((a,b)=>a+b, 0) / last5Rh.length;
+
+            let dsVals = temps.map((t, i) => {
+                let rh = rhs[i];
+                let risk = (Math.max(0, 100 - Math.abs(t - 22) * 6)) * (rh / 100);
+                return Math.min(95, Math.max(5, Math.round(risk)));
+            });
+            let dsCurrent = dsVals[dsVals.length - 1];
+
+            document.getElementById("avgTemp").innerText = avgT5.toFixed(1);
+            document.getElementById("avgRh").innerText = avgRh5.toFixed(0);
+            document.getElementById("dsProbabilityVal").innerText = dsCurrent + "%";
+            document.getElementById("dsRiskBadge").innerHTML = getRiskBadgeHtml(dsCurrent, 20);
+            updateChartWithDates(dsChartObj, formattedDates, dsVals.slice(-14), "Dollar Spot (%)");
+
+            let micVals = temps.map((t, i) => {
+                let rh = rhs[i];
+                let tFactor = t <= 18 ? Math.max(0, 100 - (t - 5)*4) : Math.max(0, 50 - (t - 18)*10);
+                let risk = tFactor * (rh / 90);
+                return Math.min(98, Math.max(5, Math.round(risk)));
+            });
+            let micCurrent = micVals[micVals.length - 1];
+
+            document.getElementById("micAvgTemp").innerText = avgT5.toFixed(1);
+            document.getElementById("micAvgRh").innerText = avgRh5.toFixed(0);
+            document.getElementById("micProbabilityVal").innerText = micCurrent + "%";
+            document.getElementById("micRiskBadge").innerHTML = getRiskBadgeHtml(micCurrent, 60);
+            updateChartWithDates(microdochiumChartObj, formattedDates, micVals.slice(-14), "Microdochium (%)");
+
+            let bpVals = temps.map((t, i) => {
+                let rh = rhs[i];
+                let tFactor = t >= 18 ? Math.min(100, (t - 15) * 8) : 10;
+                let risk = tFactor * (rh / 100);
+                return Math.min(95, Math.max(5, Math.round(risk)));
+            });
+            let bpCurrent = bpVals[bpVals.length - 1];
+
+            document.getElementById("bpAvgTemp").innerText = avgT5.toFixed(1);
+            document.getElementById("bpAvgRh").innerText = avgRh5.toFixed(0);
+            document.getElementById("bpProbabilityVal").innerText = bpCurrent + "%";
+            document.getElementById("bpRiskBadge").innerHTML = getRiskBadgeHtml(bpCurrent, 55);
+            updateChartWithDates(brownPatchChartObj, formattedDates, bpVals.slice(-14), "Brown Patch (%)");
+
+            let pyVals = temps.map((t, i) => {
+                let rh = rhs[i];
+                let tFactor = t >= 22 ? Math.min(100, (t - 20) * 9) : 5;
+                let risk = tFactor * (rh / 95);
+                return Math.min(95, Math.max(2, Math.round(risk)));
+            });
+            let pyCurrent = pyVals[pyVals.length - 1];
+
+            document.getElementById("pyAvgTemp").innerText = avgT5.toFixed(1) + " °C";
+            document.getElementById("pyAvgRh").innerText = avgRh5.toFixed(0) + " %";
+            document.getElementById("pyRiskIndex").innerText = pyCurrent + " / 100";
+            document.getElementById("pyRiskBadgeContainer").innerHTML = getRiskBadgeHtml(pyCurrent, 50);
+            document.getElementById("pyStatusBox").className = `p-2 mb-2 rounded border fw-bold text-center ${pyCurrent > 50 ? 'bg-danger-subtle text-danger' : 'bg-success-subtle text-success'}`;
+            document.getElementById("pyStatusBox").innerText = pyCurrent > 50 ? "ATTENZIONE: Condizioni favorevoli a Pyricularia (ITM alto)" : "Stato regolare: Rischio fitosanitario basso";
+        }
+
+        function getRiskBadgeHtml(val, threshold) {
+            if (val >= threshold + 20) return '<span class="badge bg-danger" style="font-size: 0.7rem;">Rischio Alto</span>';
+            if (val >= threshold) return '<span class="badge bg-warning text-dark" style="font-size: 0.7rem;">Rischio Moderato</span>';
+            return '<span class="badge bg-success" style="font-size: 0.7rem;">Rischio Basso</span>';
+        }
+
+        // --- CHARTS INITIALIZATION ---
+        function initCharts() {
+            let ctxNpk = document.getElementById('npkChart').getContext('2d');
+            npkChartObj = new Chart(ctxNpk, {
+                type: 'bar',
+                data: {
+                    labels: ['Azoto (N)', 'Fosforo (P2O5)', 'Potassio (K2O)'],
+                    datasets: [{
+                        label: 'kg/ha',
+                        data: [0, 0, 0],
+                        backgroundColor: ['#10b981', '#3b82f6', '#06b6d4'],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true } }
                 }
             });
 
-            const ctx = document.getElementById('gpChart').getContext('2d');
-            if (gpChartInstance) gpChartInstance.destroy();
-            gpChartInstance = new Chart(ctx, {
-                type: 'line',
+            let createLineChart = (canvasId, color) => {
+                let ctx = document.getElementById(canvasId).getContext('2d');
+                return new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            label: 'Rischio %',
+                            data: [],
+                            borderColor: color,
+                            backgroundColor: color + '22',
+                            fill: true,
+                            tension: 0.3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: { y: { beginAtZero: true, max: 100 } }
+                    }
+                });
+            };
+
+            dsChartObj = createLineChart('dsChart', '#d97706');
+            microdochiumChartObj = createLineChart('microdochiumChart', '#0284c7');
+            brownPatchChartObj = createLineChart('brownPatchChart', '#b45309');
+
+            let ctxGp = document.getElementById('gpChart').getContext('2d');
+            gpChartObj = new Chart(ctxGp, {
+                type: 'bar',
                 data: {
-                    labels: monthsNames,
+                    labels: ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'],
                     datasets: [
-                        { label: 'Indice GP (%)', data: gpValues, borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)', fill: true, tension: 0.4, yAxisID: 'y' },
-                        { label: 'Azoto (kg/ha)', data: nMonthly.map(v => parseFloat(v.toFixed(1))), type: 'bar', backgroundColor: 'rgba(2, 132, 199, 0.7)', yAxisID: 'y1' }
+                        {
+                            type: 'line',
+                            label: 'Crescita (GP %)',
+                            data: [15, 20, 45, 75, 95, 80, 50, 60, 85, 90, 50, 20],
+                            borderColor: '#10b981',
+                            backgroundColor: '#10b981',
+                            yAxisID: 'y1',
+                            tension: 0.3
+                        },
+                        {
+                            type: 'bar',
+                            label: 'Azoto Mensile (kg/ha)',
+                            data: Array(12).fill(0),
+                            backgroundColor: 'rgba(59, 130, 246, 0.6)',
+                            yAxisID: 'y',
+                            borderRadius: 4
+                        }
                     ]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
-                        y: { type: 'linear', display: true, position: 'left', min: 0, max: 100 },
-                        y1: { type: 'linear', display: true, position: 'right', min: 0, grid: { drawOnChartArea: false } }
+                        y: { type: 'linear', display: true, position: 'left', beginAtZero: true, title: { display: true, text: 'N (kg/ha)' } },
+                        y1: { type: 'linear', display: true, position: 'right', beginAtZero: true, max: 100, grid: { drawOnChartArea: false }, title: { display: true, text: 'GP %' } }
                     }
                 }
             });
         }
+
+        function updateNPKChart(n, p, k) {
+            if (npkChartObj) {
+                npkChartObj.data.datasets[0].data = [n, p, k];
+                npkChartObj.update();
+            }
+        }
+
+        function updateChartWithDates(chartObj, labelsArr, dataArr, labelStr) {
+            if (chartObj) {
+                chartObj.data.labels = labelsArr;
+                chartObj.data.datasets[0].data = dataArr;
+                chartObj.data.datasets[0].label = labelStr;
+                chartObj.update();
+            }
+        }
+
+        function updateGPChartNitrogen(monthlyArray) {
+            if (gpChartObj) {
+                gpChartObj.data.datasets[1].data = monthlyArray.map(v => parseFloat(v.toFixed(1)));
+                gpChartObj.update();
+            }
+        }
+
+        function updateGPChartType(type) {
+            if (!gpChartObj) return;
+            if (type === 'c4') {
+                gpChartObj.data.datasets[0].data = [5, 10, 30, 60, 85, 100, 100, 95, 80, 45, 15, 5];
+            } else {
+                gpChartObj.data.datasets[0].data = [15, 20, 45, 75, 95, 80, 50, 60, 85, 90, 50, 20];
+            }
+            gpChartObj.update();
+        }
     </script>
+
+    <!-- Disclaimer ICL -->
+    <footer class="text-center py-4 mt-5 text-muted small border-top bg-white">
+        <div class="container">
+            <p class="mb-2">N.B. Considerando che le circostanze d'uso possono variare e che l'uso dei prodotti in questione non avviene sotto il nostro diretto controllo, ICL non è responsabile per eventuali risultati negativi non imputabili al prodotto.</p>
+            <p class="mb-0 fw-bold"> &copy; 2026 Made by G. Defanti - Resp. Tecnico Golf ICL Italia</p>
+        </div>
+    </footer>
 </body>
 </html>
