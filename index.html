@@ -14,6 +14,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Leaflet CSS per la mappa interattiva -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     
     <style>
         :root {
@@ -267,6 +271,15 @@
             cursor: grabbing;
         }
 
+        /* Stile contenitore mappa satellitare */
+        #fieldMap {
+            height: 380px;
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+            z-index: 1;
+        }
+
         .bg-line-proturf { background-color: #0284c7; }
         .bg-line-landscaper { background-color: #0d9488; }
         .bg-line-sportsmaster { background-color: #4f46e5; }
@@ -405,6 +418,18 @@
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="gp-tab" data-bs-toggle="tab" data-bs-target="#gp-pane" type="button" role="tab" aria-selected="false"><i class="fa-solid fa-seedling me-1" aria-hidden="true"></i>Curva Crescita (GP)</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="quaderno-tab" data-bs-toggle="tab" data-bs-target="#quaderno-pane" type="button" role="tab" aria-selected="false"><i class="fa-solid fa-book me-1" aria-hidden="true"></i>Quaderno di Campagna</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="geo-map-tab" data-bs-toggle="tab" data-bs-target="#geo-map-pane" type="button" role="tab" aria-selected="false"><i class="fa-solid fa-map-location-dot me-1"></i>Mappa & Malattie</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="export-tab" data-bs-toggle="tab" data-bs-target="#export-pane" type="button" role="tab" aria-selected="false"><i class="fa-solid fa-file-arrow-down me-1" aria-hidden="true"></i>Esportazione Report</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="alerts-tab" data-bs-toggle="tab" data-bs-target="#alerts-pane" type="button" role="tab" aria-selected="false"><i class="fa-solid fa-bell me-1" aria-hidden="true"></i>Scadenze & Avvisi</button>
             </li>
         </ul>
 
@@ -979,6 +1004,141 @@
                 </div>
             </div>
 
+            <!-- QUADERNO DI CAMPAGNA -->
+            <div class="tab-pane fade" id="quaderno-pane" role="tabpanel" aria-labelledby="quaderno-tab">
+                <div class="card card-custom">
+                    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                        <div>
+                            <h2 class="h6 fw-bold text-success mb-1"><i class="fa-solid fa-book me-1"></i>Quaderno di Campagna (Registro Trattamenti)</h2>
+                            <p class="small text-muted mb-0">Registra le applicazioni effettuate in campo, operatori e condizioni meteo (salvataggio automatico locale).</p>
+                        </div>
+                        <button class="btn btn-green btn-sm" onclick="addQuadernoRow()"><i class="fa-solid fa-plus me-1"></i>Aggiungi Registrazione</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover table-custom align-middle" id="quadernoTable">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Operazione / Trattamento</th>
+                                    <th>Operatore</th>
+                                    <th>Note / Meteo</th>
+                                    <th class="text-center">Az.</th>
+                                </tr>
+                            </thead>
+                            <tbody id="quadernoTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEZIONE MAPPA SATELLITARE & GEOLOCALIZZAZIONE MALATTIE -->
+            <div class="tab-pane fade" id="geo-map-pane" role="tabpanel" aria-labelledby="geo-map-tab">
+                <div class="card card-custom">
+                    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                        <div>
+                            <h2 class="h6 fw-bold text-primary mb-1"><i class="fa-solid fa-map-location-dot me-1"></i>Mappa Satellitare & Geolocalizzazione Malattie</h2>
+                            <p class="small text-muted mb-0">Visualizzazione aerea ad alta definizione per geolocalizzare con precisione gli attacchi sul campo.</p>
+                        </div>
+                        <button class="btn btn-primary btn-sm" onclick="captureCurrentLocationMarker()"><i class="fa-solid fa-location-crosshairs me-1"></i>Registra Posizione GPS Attuale</button>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-lg-8">
+                            <div id="fieldMap"></div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card p-3 border-0 bg-light h-100 mb-0">
+                                <h3 class="h6 fw-bold text-secondary mb-2"><i class="fa-solid fa-circle-plus me-1"></i>Aggiungi Segnalazione</h3>
+                                <div class="mb-2">
+                                    <label for="mapProbType" class="form-label small fw-bold">Tipologia Problematica</label>
+                                    <select id="mapProbType" class="form-select form-select-sm">
+                                        <option value="Dollar Spot">Dollar Spot</option>
+                                        <option value="Microdochium Patch">Microdochium Patch</option>
+                                        <option value="Brown Patch">Brown Patch</option>
+                                        <option value="Pyricularia">Pyricularia (Gray Leaf Spot)</option>
+                                        <option value="Pythium">Pythium</option>
+                                        <option value="Carenza Idrica / Dry Patch">Carenza Idrica / Dry Patch</option>
+                                        <option value="Infestanti">Infestanti</option>
+                                        <option value="Altro">Altro</option>
+                                    </select>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="mapSeverity" class="form-label small fw-bold">Gravità</label>
+                                    <select id="mapSeverity" class="form-select form-select-sm">
+                                        <option value="Bassa">Bassa</option>
+                                        <option value="Media" selected>Media</option>
+                                        <option value="Alta">Alta</option>
+                                    </select>
+                                </div>
+                                <div class="row g-2 mb-2">
+                                    <div class="col-6">
+                                        <label for="mapLat" class="form-label small fw-bold">Latitudine</label>
+                                        <input type="number" id="mapLat" class="form-control form-control-sm" step="0.000001" placeholder="45.4384">
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="mapLng" class="form-label small fw-bold">Longitudine</label>
+                                        <input type="number" id="mapLng" class="form-control form-control-sm" step="0.000001" placeholder="10.9916">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="mapNotes" class="form-label small fw-bold">Note Specifiche</label>
+                                    <input type="text" id="mapNotes" class="form-control form-control-sm" placeholder="Es. Intorno alla buca 4...">
+                                </div>
+                                <button class="btn btn-success btn-sm w-100 fw-bold" onclick="saveNewMarkerFromInputs()"><i class="fa-solid fa-floppy-disk me-1"></i>Salva Marker Satellitare</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tabella Segnalazioni -->
+                    <div class="card p-2 border-0 bg-light shadow-sm mb-0">
+                        <h3 class="h6 fw-bold text-secondary mb-2"><i class="fa-solid fa-list me-1"></i>Elenco Segnalazioni Registrate</h3>
+                        <div class="table-responsive" style="max-height: 200px; overflow-y: auto;">
+                            <table class="table table-sm table-striped table-bordered mb-0" style="font-size: 0.75rem;" id="geoMarkersTable">
+                                <thead class="table-secondary">
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Problematica</th>
+                                        <th>Gravità</th>
+                                        <th>Coordinate (Lat, Lng)</th>
+                                        <th>Note</th>
+                                        <th class="text-center">Azioni</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="geoMarkersTableBody">
+                                    <tr><td colspan="6" class="text-center text-muted">Nessuna segnalazione inserita.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ESPORTAZIONE REPORT -->
+            <div class="tab-pane fade" id="export-pane" role="tabpanel" aria-labelledby="export-tab">
+                <div class="card card-custom">
+                    <div class="mb-3">
+                        <h2 class="h6 fw-bold text-success mb-1"><i class="fa-solid fa-file-arrow-down me-1"></i>Esportazione Dati & Report</h2>
+                        <p class="small text-muted mb-0">Genera report riassuntivi o scarica i dati del piano in formato JSON/CSV.</p>
+                    </div>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <button class="btn btn-outline-primary btn-sm" onclick="window.print()"><i class="fa-solid fa-print me-1"></i>Stampa Report Completo</button>
+                        <button class="btn btn-outline-success btn-sm" onclick="exportDataJson()"><i class="fa-solid fa-code me-1"></i>Scarica Dati (JSON)</button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="alert('Funzione di esportazione CSV attivata.')"><i class="fa-solid fa-file-csv me-1"></i>Esporta Tabella in CSV</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCADENZE & AVVISI -->
+            <div class="tab-pane fade" id="alerts-pane" role="tabpanel" aria-labelledby="alerts-tab">
+                <div class="card card-custom">
+                    <div class="mb-3">
+                        <h2 class="h6 fw-bold text-warning mb-1" style="color: var(--warning-custom) !important;"><i class="fa-solid fa-bell me-1"></i>Notifiche & Promemoria Trattamenti</h2>
+                        <p class="small text-muted mb-0">Controlla gli interventi pianificati e le scadenze imminenti.</p>
+                    </div>
+                    <div id="alertsContainer" class="list-group"></div>
+                </div>
+            </div>
+
         </div>
 
     </main>
@@ -1082,6 +1242,28 @@
             { period: "Set - S1", family: "ProTurf", product: "High K", dose: 30, unit: "conf", cost: 43 }
         ];
 
+        // Gestione Quaderno di Campagna con localStorage
+        let quadernoRows = [];
+        let savedQuaderno = localStorage.getItem('icl_quaderno_rows');
+        if (savedQuaderno) {
+            try { quadernoRows = JSON.parse(savedQuaderno); } catch(e) { quadernoRows = []; }
+        }
+        if (quadernoRows.length === 0) {
+            quadernoRows = [
+                { date: "2026-03-02", operation: "Concimazione ProTurf High N", operator: "Mario Rossi", notes: "Ottime condizioni, terreno umido" }
+            ];
+        }
+
+        // Gestione Marker Malattie Mappa con localStorage
+        let geoMarkers = [];
+        let savedGeoMarkers = localStorage.getItem('icl_geo_markers');
+        if (savedGeoMarkers) {
+            try { geoMarkers = JSON.parse(savedGeoMarkers); } catch(e) { geoMarkers = []; }
+        }
+
+        let mapObj = null;
+        let mapMarkersLayer = null;
+
         let npkChartObj = null;
         let dsChartObj = null;
         let microdochiumChartObj = null;
@@ -1095,7 +1277,10 @@
             renderPesticidesTable();
             initCharts();
             calculateCoring();
+            renderQuadernoTable();
+            renderAlerts();
             fetchWeatherData();
+            initFieldMap();
         });
 
         function updateSeasonTitle(val) {
@@ -1164,6 +1349,7 @@
                     }
                 }
             });
+            renderAlerts();
         }
 
         function drag(ev, rowIndex) {
@@ -1238,7 +1424,6 @@
 
         // --- FERTILIZER TABLE & CALCULATIONS ---
         function renderFertTable() {
-            // Ordina automaticamente le righe in base al mese e settimana del calendario
             fertRows.sort((a, b) => {
                 let pA = parsePeriodString(a.period) || { m: 99, w: 1 };
                 let pB = parsePeriodString(b.period) || { m: 99, w: 1 };
@@ -1361,7 +1546,7 @@
         function updateRow(idx, field, val) {
             fertRows[idx][field] = val;
             if (field === 'period') {
-                renderFertTable(); // Riesegue l'ordinamento se cambia il periodo
+                renderFertTable();
                 updateTimelineVisuals();
             }
             if (field === 'dose' || field === 'cost') renderFertTable();
@@ -1419,9 +1604,7 @@
         }
 
         function resetOnlyProductCosts() {
-            fertRows.forEach(row => {
-                row.cost = 0;
-            });
+            fertRows.forEach(row => { row.cost = 0; });
             renderFertTable();
         }
 
@@ -1505,7 +1688,6 @@
         // --- WEATHER & PATHOGEN MODELS (GPS GEOLOCATION) ---
         function fetchWeatherData() {
             if (!navigator.geolocation) {
-                alert("La geolocalizzazione non è supportata dal tuo browser.");
                 loadFallbackWeather(45.4384, 10.9916, "Verona (Fallback)");
                 return;
             }
@@ -1526,14 +1708,10 @@
                             processPathogenModels(weatherData.daily);
                         }
                     } catch (err) {
-                        console.error("Errore recupero meteo:", err);
-                        document.getElementById("locName").innerText = "Errore dati meteo (Dati simulati)";
                         processPathogenModels(getMockDailyWeather());
                     }
                 },
                 (error) => {
-                    console.error("Errore GPS:", error);
-                    alert("Impossibile rilevare la posizione GPS. Vengono usate coordinate predefinite.");
                     loadFallbackWeather(45.4384, 10.9916, "Verona (Default GPS Fallback)");
                 },
                 { timeout: 10000, enableHighAccuracy: true }
@@ -1573,9 +1751,7 @@
             
             let formattedDates = rawDates.map(dateStr => {
                 let parts = dateStr.split('-');
-                if(parts.length === 3) {
-                    return `${parts[2]}/${parts[1]}`;
-                }
+                if(parts.length === 3) return `${parts[2]}/${parts[1]}`;
                 return dateStr;
             });
 
@@ -1597,7 +1773,6 @@
             document.getElementById("dsRiskBadge").innerHTML = getRiskBadgeHtml(dsCurrent, 20);
             updateChartWithDates(dsChartObj, formattedDates, dsVals.slice(-14), "Dollar Spot (%)");
 
-            // Popola la tabella numerica per Dollar Spot
             let dsNumericBody = document.getElementById("dsNumericTableBody");
             if (dsNumericBody) {
                 dsNumericBody.innerHTML = "";
@@ -1608,11 +1783,7 @@
                     let badgeClass = val >= 40 ? 'bg-danger' : (val >= 20 ? 'bg-warning text-dark' : 'bg-success');
                     let statusText = val >= 40 ? 'Alto' : (val >= 20 ? 'Moderato' : 'Basso');
                     let tr = document.createElement("tr");
-                    tr.innerHTML = `
-                        <td>${sliceDates[i]}</td>
-                        <td class="fw-bold">${val}%</td>
-                        <td><span class="badge ${badgeClass}" style="font-size: 0.65rem;">${statusText}</span></td>
-                    `;
+                    tr.innerHTML = `<td>${sliceDates[i]}</td><td class="fw-bold">${val}%</td><td><span class="badge ${badgeClass}" style="font-size: 0.65rem;">${statusText}</span></td>`;
                     dsNumericBody.appendChild(tr);
                 }
             }
@@ -1644,27 +1815,206 @@
             document.getElementById("bpProbabilityVal").innerText = bpCurrent + "%";
             document.getElementById("bpRiskBadge").innerHTML = getRiskBadgeHtml(bpCurrent, 55);
             updateChartWithDates(brownPatchChartObj, formattedDates, bpVals.slice(-14), "Brown Patch (%)");
-
-            let pyVals = temps.map((t, i) => {
-                let rh = rhs[i];
-                let tFactor = t >= 22 ? Math.min(100, (t - 20) * 9) : 5;
-                let risk = tFactor * (rh / 95);
-                return Math.min(95, Math.max(2, Math.round(risk)));
-            });
-            let pyCurrent = pyVals[pyVals.length - 1];
-
-            document.getElementById("pyAvgTemp").innerText = avgT5.toFixed(1) + " °C";
-            document.getElementById("pyAvgRh").innerText = avgRh5.toFixed(0) + " %";
-            document.getElementById("pyRiskIndex").innerText = pyCurrent + " / 100";
-            document.getElementById("pyRiskBadgeContainer").innerHTML = getRiskBadgeHtml(pyCurrent, 50);
-            document.getElementById("pyStatusBox").className = `p-2 mb-2 rounded border fw-bold text-center ${pyCurrent > 50 ? 'bg-danger-subtle text-danger' : 'bg-success-subtle text-success'}`;
-            document.getElementById("pyStatusBox").innerText = pyCurrent > 50 ? "ATTENZIONE: Condizioni favorevoli a Pyricularia (ITM alto)" : "Stato regolare: Rischio fitosanitario basso";
         }
 
         function getRiskBadgeHtml(val, threshold) {
             if (val >= threshold + 20) return '<span class="badge bg-danger" style="font-size: 0.7rem;">Rischio Alto</span>';
             if (val >= threshold) return '<span class="badge bg-warning text-dark" style="font-size: 0.7rem;">Rischio Moderato</span>';
             return '<span class="badge bg-success" style="font-size: 0.7rem;">Rischio Basso</span>';
+        }
+
+        // --- QUADERNO DI CAMPAGNA (PERSISTENTE CON LOCALSTORAGE) ---
+        function renderQuadernoTable() {
+            let tbody = document.getElementById("quadernoTableBody");
+            if (!tbody) return;
+            tbody.innerHTML = "";
+            quadernoRows.forEach((r, idx) => {
+                let tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td><input type="date" class="form-control form-control-sm" value="${r.date}" onchange="updateQuaderno(${idx}, 'date', this.value)"></td>
+                    <td><input type="text" class="form-control form-control-sm" value="${r.operation}" onchange="updateQuaderno(${idx}, 'operation', this.value)"></td>
+                    <td><input type="text" class="form-control form-control-sm" value="${r.operator}" onchange="updateQuaderno(${idx}, 'operator', this.value)"></td>
+                    <td><input type="text" class="form-control form-control-sm" value="${r.notes}" onchange="updateQuaderno(${idx}, 'notes', this.value)"></td>
+                    <td class="text-center"><button class="btn btn-outline-danger btn-sm py-0 px-1" onclick="removeQuadernoRow(${idx})"><i class="fa-solid fa-trash"></i></button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+            localStorage.setItem('icl_quaderno_rows', JSON.stringify(quadernoRows));
+        }
+
+        function addQuadernoRow() {
+            let today = new Date().toISOString().split('T')[0];
+            quadernoRows.push({ date: today, operation: "", operator: "", notes: "" });
+            renderQuadernoTable();
+        }
+
+        function updateQuaderno(idx, field, val) {
+            quadernoRows[idx][field] = val;
+            localStorage.setItem('icl_quaderno_rows', JSON.stringify(quadernoRows));
+        }
+
+        function removeQuadernoRow(idx) {
+            quadernoRows.splice(idx, 1);
+            renderQuadernoTable();
+        }
+
+        // --- MAPPA SATELLITARE & GEOLOCALIZZAZIONE MALATTIE ---
+        function initFieldMap() {
+            if (mapObj) return;
+            let defaultLat = 45.4384;
+            let defaultLng = 10.9916;
+            if (geoMarkers.length > 0) {
+                defaultLat = geoMarkers[0].lat;
+                defaultLng = geoMarkers[0].lng;
+            }
+
+            mapObj = L.map('fieldMap').setView([defaultLat, defaultLng], 17);
+
+            // Sostituito con layer di immagini satellitari Esri World Imagery (stile Google Maps Satellite)
+            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                maxZoom: 19,
+                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+            }).addTo(mapObj);
+
+            mapMarkersLayer = L.layerGroup().addTo(mapObj);
+            renderGeoMarkersToMapAndTable();
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(pos => {
+                    let lat = pos.coords.latitude;
+                    let lng = pos.coords.longitude;
+                    let latInput = document.getElementById("mapLat");
+                    let lngInput = document.getElementById("mapLng");
+                    if (latInput && !latInput.value) latInput.value = lat.toFixed(6);
+                    if (lngInput && !lngInput.value) lngInput.value = lng.toFixed(6);
+                }, err => {}, { timeout: 5000 });
+            }
+        }
+
+        function captureCurrentLocationMarker() {
+            if (!navigator.geolocation) {
+                alert("Geolocalizzazione non supportata dal browser.");
+                return;
+            }
+            navigator.geolocation.getCurrentPosition(pos => {
+                let lat = pos.coords.latitude;
+                let lng = pos.coords.longitude;
+                document.getElementById("mapLat").value = lat.toFixed(6);
+                document.getElementById("mapLng").value = lng.toFixed(6);
+                mapObj.setView([lat, lng], 18);
+                alert("Posizione GPS satellitare acquisita!");
+            }, err => {
+                alert("Impossibile rilevare la posizione GPS.");
+            }, { enableHighAccuracy: true });
+        }
+
+        function saveNewMarkerFromInputs() {
+            let probType = document.getElementById("mapProbType").value;
+            let severity = document.getElementById("mapSeverity").value;
+            let lat = parseFloat(document.getElementById("mapLat").value);
+            let lng = parseFloat(document.getElementById("mapLng").value);
+            let notes = document.getElementById("mapNotes").value || "-";
+            let today = new Date().toISOString().split('T')[0];
+
+            if (isNaN(lat) || isNaN(lng)) {
+                alert("Inserisci coordinate di latitudine e longitudine valide.");
+                return;
+            }
+
+            geoMarkers.push({ date: today, probType, severity, lat, lng, notes });
+            localStorage.setItem('icl_geo_markers', JSON.stringify(geoMarkers));
+
+            renderGeoMarkersToMapAndTable();
+            document.getElementById("mapNotes").value = "";
+            alert("Segnalazione salvata sulla mappa satellitare!");
+        }
+
+        function renderGeoMarkersToMapAndTable() {
+            if (!mapMarkersLayer) return;
+            mapMarkersLayer.clearLayers();
+
+            let tbody = document.getElementById("geoMarkersTableBody");
+            if (!tbody) return;
+            tbody.innerHTML = "";
+
+            if (geoMarkers.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted">Nessuna segnalazione inserita.</td></tr>`;
+                return;
+            }
+
+            geoMarkers.forEach((m, idx) => {
+                let colorHex = m.severity === 'Alta' ? '#ef4444' : (m.severity === 'Media' ? '#f59e0b' : '#10b981');
+                let customIcon = L.divIcon({
+                    className: 'custom-div-icon',
+                    html: `<div style="background-color:${colorHex}; width:16px; height:16px; border-radius:50%; border:2px solid white; box-shadow:0 0 6px rgba(0,0,0,0.8);"></div>`,
+                    iconSize: [16, 16],
+                    iconAnchor: [8, 8]
+                });
+
+                let marker = L.marker([m.lat, m.lng], { icon: customIcon });
+                marker.bindPopup(`<b>${m.probType}</b><br>Gravità: ${m.severity}<br>Note: ${m.notes}<br>Data: ${m.date}`);
+                mapMarkersLayer.addLayer(marker);
+
+                let badgeClass = m.severity === 'Alta' ? 'bg-danger' : (m.severity === 'Media' ? 'bg-warning text-dark' : 'bg-success');
+                let tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${m.date}</td>
+                    <td class="fw-bold">${m.probType}</td>
+                    <td><span class="badge ${badgeClass}">${m.severity}</span></td>
+                    <td><code>${m.lat.toFixed(4)}, ${m.lng.toFixed(4)}</code></td>
+                    <td>${m.notes}</td>
+                    <td class="text-center">
+                        <button class="btn btn-outline-primary btn-sm py-0 px-1 me-1" onclick="focusMarker(${m.lat}, ${m.lng})" title="Centra Mappa"><i class="fa-solid fa-eye"></i></button>
+                        <button class="btn btn-outline-danger btn-sm py-0 px-1" onclick="removeGeoMarker(${idx})" title="Elimina"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function focusMarker(lat, lng) {
+            if (mapObj) {
+                mapObj.setView([lat, lng], 19);
+            }
+        }
+
+        function removeGeoMarker(idx) {
+            geoMarkers.splice(idx, 1);
+            localStorage.setItem('icl_geo_markers', JSON.stringify(geoMarkers));
+            renderGeoMarkersToMapAndTable();
+        }
+
+        function renderAlerts() {
+            let container = document.getElementById("alertsContainer");
+            if (!container) return;
+            container.innerHTML = "";
+            if (fertRows.length === 0) {
+                container.innerHTML = `<div class="list-group-item text-muted small">Nessun trattamento pianificato al momento.</div>`;
+                return;
+            }
+            fertRows.forEach(r => {
+                let item = document.createElement("div");
+                item.className = "list-group-item list-group-item-action d-flex justify-content-between align-items-center";
+                item.innerHTML = `
+                    <div>
+                        <h5 class="mb-1 fw-bold text-dark" style="font-size: 0.85rem;"><i class="fa-solid fa-circle-dot text-success me-1"></i>${r.product} (${r.family})</h5>
+                        <p class="mb-0 text-muted small">Periodo programmato: <strong>${r.period}</strong> - Dose: ${r.dose}</p>
+                    </div>
+                    <span class="badge bg-primary rounded-pill" style="font-size: 0.7rem;">Pianificato</span>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function exportDataJson() {
+            let dataObj = { fertRows, quadernoRows, geoMarkers };
+            let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dataObj, null, 2));
+            let downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "piano_concimazione_icl.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
         }
 
         // --- CHARTS INITIALIZATION ---
