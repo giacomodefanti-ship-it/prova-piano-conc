@@ -656,8 +656,23 @@
 
                     <div class="card p-2 border-0 bg-light shadow-sm mb-3">
                         <h3 class="h6 fw-bold text-secondary mb-2" style="font-size: 0.82rem;"><i class="fa-solid fa-chart-area me-1" aria-hidden="true"></i>Andamento Dollar Spot (14 Giorni)</h3>
-                        <div style="height: 220px; position: relative;">
+                        <div style="height: 220px; position: relative;" class="mb-3">
                             <canvas id="dsChart"></canvas>
+                        </div>
+                        <h4 class="h6 fw-bold text-secondary mb-2" style="font-size: 0.8rem;"><i class="fa-solid fa-table-list me-1"></i>Riepilogo Numerico Rischio (Settimane Precedenti / Storico Giornaliero)</h4>
+                        <div class="table-responsive" style="max-height: 150px; overflow-y: auto;">
+                            <table class="table table-sm table-striped table-bordered mb-0" style="font-size: 0.75rem;" id="dsNumericTable">
+                                <thead class="table-secondary">
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Rischio Dollar Spot (%)</th>
+                                        <th>Stato</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dsNumericTableBody">
+                                    <tr><td colspan="3" class="text-center text-muted">In attesa di caricamento dati...</td></tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
 
@@ -1581,6 +1596,26 @@
             document.getElementById("dsProbabilityVal").innerText = dsCurrent + "%";
             document.getElementById("dsRiskBadge").innerHTML = getRiskBadgeHtml(dsCurrent, 20);
             updateChartWithDates(dsChartObj, formattedDates, dsVals.slice(-14), "Dollar Spot (%)");
+
+            // Popola la tabella numerica per Dollar Spot
+            let dsNumericBody = document.getElementById("dsNumericTableBody");
+            if (dsNumericBody) {
+                dsNumericBody.innerHTML = "";
+                let sliceDates = formattedDates.slice(-14);
+                let sliceVals = dsVals.slice(-14);
+                for(let i = 0; i < sliceDates.length; i++) {
+                    let val = sliceVals[i];
+                    let badgeClass = val >= 40 ? 'bg-danger' : (val >= 20 ? 'bg-warning text-dark' : 'bg-success');
+                    let statusText = val >= 40 ? 'Alto' : (val >= 20 ? 'Moderato' : 'Basso');
+                    let tr = document.createElement("tr");
+                    tr.innerHTML = `
+                        <td>${sliceDates[i]}</td>
+                        <td class="fw-bold">${val}%</td>
+                        <td><span class="badge ${badgeClass}" style="font-size: 0.65rem;">${statusText}</span></td>
+                    `;
+                    dsNumericBody.appendChild(tr);
+                }
+            }
 
             let micVals = temps.map((t, i) => {
                 let rh = rhs[i];
