@@ -964,66 +964,66 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
     <script>
         const productCatalog = [
-            { family: "ProTurf", name: "High N", spec: "21.5.6 + 2.5CaO + 2.5MgO", n: 21, p: 5, k: 6, durationMonths: 2, durationText: "2 Mesi", pack: 25, defaultPrice: 42.00, duration: 2 },
-            { family: "ProTurf", name: "Spring/Summer", spec: "15.6.15 + 2CaO + 2MgO", n: 15, p: 6, k: 15, durationMonths: 2, durationText: "2 Mesi", pack: 25, defaultPrice: 40.00, duration: 2 },
-            { family: "ProTurf", name: "High K", spec: "12.5.20 + 2CaO + 2MgO", n: 12, p: 5, k: 20, durationMonths: 2, durationText: "2 Mesi", pack: 25, defaultPrice: 43.00, duration: 2 },
-            { family: "ProTurf", name: "Classic", spec: "20.0.7 + 3CaO + 3MgO", n: 20, p: 0, k: 7, durationMonths: 2, durationText: "2 Mesi", pack: 25, defaultPrice: 39.00, duration: 2 },
+            { family: "ProTurf", name: "High N", spec: "21.5.6 + 2.5CaO + 2.5MgO", n: 21, p: 5, k: 6, durationMonths: 2, durationText: "2 Mesi", pack: 25, unit: "kg", defaultPrice: 42.00, duration: 2 },
+            { family: "ProTurf", name: "Spring/Summer", spec: "15.6.15 + 2CaO + 2MgO", n: 15, p: 6, k: 15, durationMonths: 2, durationText: "2 Mesi", pack: 25, unit: "kg", defaultPrice: 40.00, duration: 2 },
+            { family: "ProTurf", name: "High K", spec: "12.5.20 + 2CaO + 2MgO", n: 12, p: 5, k: 20, durationMonths: 2, durationText: "2 Mesi", pack: 25, unit: "kg", defaultPrice: 43.00, duration: 2 },
+            { family: "ProTurf", name: "Classic", spec: "20.0.7 + 3CaO + 3MgO", n: 20, p: 0, k: 7, durationMonths: 2, durationText: "2 Mesi", pack: 25, unit: "kg", defaultPrice: 39.00, duration: 2 },
 
-            { family: "Landscaper Pro", name: "Maintenance", spec: "21.6.8 + 2MgO", n: 21, p: 6, k: 8, durationMonths: 3, durationText: "3 Mesi", pack: 25, defaultPrice: 35.00, duration: 2 },
-            { family: "Landscaper Pro", name: "Stress Control", spec: "15.0.26 + 4MgO", n: 15, p: 0, k: 26, durationMonths: 3, durationText: "3 Mesi", pack: 15, defaultPrice: 38.00, duration: 2 },
-            { family: "Landscaper Pro", name: "New Grass", spec: "16.26.12", n: 16, p: 26, k: 12, durationMonths: 3, durationText: "3 Mesi", pack: 15, defaultPrice: 40.00, duration: 1 },
-            { family: "Landscaper Pro", name: "Full Season", spec: "27.5.5 + 2MgO", n: 27, p: 5, k: 5, durationMonths: 8, durationText: "8-9 Mesi", pack: 15, defaultPrice: 45.00, duration: 3 },
-            { family: "Landscaper Pro", name: "Shade Special", spec: "11.5.5 + 8Fe", n: 11, p: 5, k: 5, durationMonths: 2, durationText: "8 Settimane", pack: 15, defaultPrice: 36.00, duration: 2 },
-            { family: "Landscaper Pro", name: "Flora", spec: "15.9.11 + 3MgO", n: 15, p: 9, k: 11, durationMonths: 5, durationText: "5-6 Mesi", pack: 15, defaultPrice: 42.00, duration: 5 },
-            { family: "Landscaper Pro", name: "Universtar Classic", spec: "15.5.15 + 2MgO", n: 15, p: 5, k: 15, durationMonths: 3, durationText: "3 Mesi", pack: 25, defaultPrice: 42.00, duration: 2 },   
-            { family: "Landscaper Pro", name: "Universtar Balance", spec: "15.5.16", n: 15, p: 5, k: 16, durationMonths: 3, durationText: "3 Mesi", pack: 25, defaultPrice: 56.00, duration: 2 },        
-            { family: "Landscaper Pro", name: "Readystar N", spec: "21.6.9 + 6.5CaO + 2MgO + 19SO3", n: 21, p: 6, k: 9, durationMonths: 1, durationText: "Pronto effetto", pack: 25, defaultPrice: 41.00, duration: 2 },
-            { family: "Landscaper Pro", name: "Readystar K", spec: "10.10.16 + 6.5CaO + MgO + 19SO3", n: 10, p: 10, k: 16, durationMonths: 1, durationText: "Pronto effetto", pack: 25, defaultPrice: 41.00, duration: 2 },
+            { family: "Landscaper Pro", name: "Maintenance", spec: "20.5.8 + 2MgO", n: 20, p: 5, k: 8, durationMonths: 3, durationText: "3 Mesi", pack: 25, unit: "kg", defaultPrice: 35.00, duration: 2 },
+            { family: "Landscaper Pro", name: "Stress Control", spec: "15.0.25 + 4MgO", n: 15, p: 0, k: 25, durationMonths: 3, durationText: "3 Mesi", pack: 15, unit: "kg", defaultPrice: 38.00, duration: 2 },
+            { family: "Landscaper Pro", name: "New Grass", spec: "16.25.12", n: 16, p: 25, k: 12, durationMonths: 3, durationText: "3 Mesi", pack: 15, unit: "kg", defaultPrice: 40.00, duration: 1 },
+            { family: "Landscaper Pro", name: "Full Season", spec: "27.5.5 + 2MgO", n: 27, p: 5, k: 5, durationMonths: 8, durationText: "8-9 Mesi", pack: 15, unit: "kg", defaultPrice: 45.00, duration: 3 },
+            { family: "Landscaper Pro", name: "Shade Special", spec: "11.5.5 + 8Fe", n: 11, p: 5, k: 5, durationMonths: 2, durationText: "8 Settimane", pack: 15, unit: "kg", defaultPrice: 36.00, duration: 2 },
+            { family: "Landscaper Pro", name: "Flora", spec: "15.9.11 + 3MgO", n: 15, p: 9, k: 11, durationMonths: 5, durationText: "5-6 Mesi", pack: 15, unit: "kg", defaultPrice: 42.00, duration: 5 },
+            { family: "Landscaper Pro", name: "Universtar Classic", spec: "15.5.15 + 2MgO", n: 15, p: 5, k: 15, durationMonths: 3, durationText: "3 Mesi", pack: 25, unit: "kg", defaultPrice: 42.00, duration: 2 },   
+            { family: "Landscaper Pro", name: "Universtar Balance", spec: "15.5.16", n: 15, p: 5, k: 16, durationMonths: 3, durationText: "3 Mesi", pack: 25, unit: "kg", defaultPrice: 56.00, duration: 2 },        
+            { family: "Landscaper Pro", name: "Readystar N", spec: "21.6.9 + 6.5CaO + 2MgO + 19SO3", n: 21, p: 6, k: 9, durationMonths: 1, durationText: "Pronto effetto", pack: 25, unit: "kg", defaultPrice: 41.00, duration: 2 },
+            { family: "Landscaper Pro", name: "Readystar K", spec: "10.10.16 + 6.5CaO + MgO + 19SO3", n: 10, p: 10, k: 16, durationMonths: 1, durationText: "Pronto effetto", pack: 25, unit: "kg", defaultPrice: 41.00, duration: 2 },
 
-            { family: "Sierrablen Plus", name: "Mini", spec: "38-0-0", n: 38, p: 0, k: 0, durationMonths: 3, durationText: "2-3 Mesi", pack: 25, defaultPrice: 69.00, duration: 3 },
-            { family: "Sierrablen Plus", name: "Active", spec: "19-5-18 + Micro", n: 19, p: 5, k: 18, durationMonths: 3, durationText: "3 Mesi", pack: 25, defaultPrice: 85.00, duration: 3 },
-            { family: "Sierrablen Plus", name: "N-Start", spec: "30-5-5", n: 30, p: 5, k: 5, durationMonths: 3, durationText: "3 Mesi", pack: 25, defaultPrice: 82.00, duration: 3 },
-            { family: "Sierrablen Plus", name: "Renovator", spec: "20-20-8", n: 20, p: 20, k: 8, durationMonths: 3, durationText: "3 Mesi", pack: 25, defaultPrice: 84.00, duration: 3 },
-            { family: "Sierrablen Plus", name: "Spring Starter 3M", spec: "24-5-13", n: 24, p: 5, k: 13, durationMonths: 3, durationText: "3 Mesi", pack: 25, defaultPrice: 83.00, duration: 3 },
-            { family: "Sierrablen Plus", name: "Spring Starter 4-5M", spec: "24-5-8 + 2MgO", n: 24, p: 5, k: 8, durationMonths: 5, durationText: "4-5 Mesi", pack: 25, defaultPrice: 85.00, duration: 5 },
-            { family: "Sierrablen Plus", name: "Stress Control", spec: "15-0-29 + 2MgO", n: 15, p: 0, k: 29, durationMonths: 3, durationText: "3 Mesi", pack: 25, defaultPrice: 88.00, duration: 3 },
-            { family: "Sierrablen Plus", name: "Turf Starter Pearl®", spec: "5-28-0 + 16.5MgO", n: 5, p: 28, k: 0, durationMonths: 3, durationText: "3 Mesi", pack: 25, defaultPrice: 89.00, duration: 3 },
+            { family: "Sierrablen Plus", name: "Mini", spec: "38-0-0", n: 38, p: 0, k: 0, durationMonths: 3, durationText: "2-3 Mesi", pack: 25, unit: "kg", defaultPrice: 69.00, duration: 3 },
+            { family: "Sierrablen Plus", name: "Active", spec: "19-5-18 + Micro", n: 19, p: 5, k: 18, durationMonths: 3, durationText: "3 Mesi", pack: 25, unit: "kg", defaultPrice: 85.00, duration: 3 },
+            { family: "Sierrablen Plus", name: "N-Start", spec: "30-5-5", n: 30, p: 5, k: 5, durationMonths: 3, durationText: "3 Mesi", pack: 25, unit: "kg", defaultPrice: 82.00, duration: 3 },
+            { family: "Sierrablen Plus", name: "Renovator", spec: "20-20-8", n: 20, p: 20, k: 8, durationMonths: 3, durationText: "3 Mesi", pack: 25, unit: "kg", defaultPrice: 84.00, duration: 3 },
+            { family: "Sierrablen Plus", name: "Spring Starter 3M", spec: "24-5-13", n: 24, p: 5, k: 13, durationMonths: 3, durationText: "3 Mesi", pack: 25, unit: "kg", defaultPrice: 83.00, duration: 3 },
+            { family: "Sierrablen Plus", name: "Spring Starter 4-5M", spec: "24-5-8 + 2MgO", n: 24, p: 5, k: 8, durationMonths: 5, durationText: "4-5 Mesi", pack: 25, unit: "kg", defaultPrice: 85.00, duration: 5 },
+            { family: "Sierrablen Plus", name: "Stress Control", spec: "15-0-29 + 2MgO", n: 15, p: 0, k: 29, durationMonths: 3, durationText: "3 Mesi", pack: 25, unit: "kg", defaultPrice: 88.00, duration: 3 },
+            { family: "Sierrablen Plus", name: "Turf Starter Pearl®", spec: "5-28-0 + 16.5MgO", n: 5, p: 28, k: 0, durationMonths: 3, durationText: "3 Mesi", pack: 25, unit: "kg", defaultPrice: 89.00, duration: 3 },
 
-            { family: "Sportsmaster CRF", name: "High N", spec: "26.5.11", n: 26, p: 5, k: 11, durationMonths: 3, durationText: "3 Mesi", pack: 25, defaultPrice: 65.00, duration: 3 },
-            { family: "Sportsmaster CRF", name: "Renovator", spec: "23.23.5", n: 23, p: 23, k: 5, durationMonths: 3, durationText: "3 Mesi", pack: 25, defaultPrice: 68.00, duration: 3 },
-            { family: "Sportsmaster CRF", name: "High K", spec: "15.5.20", n: 15, p: 5, k: 20, durationMonths: 3, durationText: "3 Mesi", pack: 25, defaultPrice: 62.00, duration: 3 },
-            { family: "Sportsmaster CRF", name: "Starter", spec: "19.19.5 + 2MgO", n: 19, p: 19, k: 5, durationMonths: 3, durationText: "3 Mesi", pack: 25, defaultPrice: 84.00, duration: 3 },
+            { family: "Sportsmaster CRF", name: "High N", spec: "26.5.11", n: 26, p: 5, k: 11, durationMonths: 3, durationText: "3 Mesi", pack: 25, unit: "kg", defaultPrice: 65.00, duration: 3 },
+            { family: "Sportsmaster CRF", name: "Renovator", spec: "23.23.5", n: 23, p: 23, k: 5, durationMonths: 3, durationText: "3 Mesi", pack: 25, unit: "kg", defaultPrice: 68.00, duration: 3 },
+            { family: "Sportsmaster CRF", name: "High K", spec: "15.5.20", n: 15, p: 5, k: 20, durationMonths: 3, durationText: "3 Mesi", pack: 25, unit: "kg", defaultPrice: 62.00, duration: 3 },
+            { family: "Sportsmaster CRF", name: "Starter", spec: "19.19.5 + 2MgO", n: 19, p: 19, k: 5, durationMonths: 3, durationText: "3 Mesi", pack: 25, unit: "kg", defaultPrice: 84.00, duration: 3 },
 
-            { family: "Sportsmaster Special BBag", name: "Balance", spec: "15.5.15", n: 15, p: 5, k: 15, durationMonths: 2, durationText: "2 Mesi", pack: 500, defaultPrice: 65.00, duration: 2 },
-            { family: "Sportsmaster Special BBag", name: "High K", spec: "12.5.25", n: 12, p: 5, k: 25, durationMonths: 2, durationText: "2 Mesi", pack: 500, defaultPrice: 68.00, duration: 2 },
-            { family: "Sportsmaster Special BBag", name: "High N", spec: "18.0.10", n: 18, p: 0, k: 10, durationMonths: 2, durationText: "2 Mesi", pack: 500, defaultPrice: 62.00, duration: 2 },
+            { family: "Sportsmaster Special BBag", name: "Balance", spec: "15.5.15", n: 15, p: 5, k: 15, durationMonths: 2, durationText: "2 Mesi", pack: 500, unit: "kg", defaultPrice: 65.00, duration: 2 },
+            { family: "Sportsmaster Special BBag", name: "High K", spec: "12.5.25", n: 12, p: 5, k: 25, durationMonths: 2, durationText: "2 Mesi", pack: 500, unit: "kg", defaultPrice: 68.00, duration: 2 },
+            { family: "Sportsmaster Special BBag", name: "High N", spec: "18.0.10", n: 18, p: 0, k: 10, durationMonths: 2, durationText: "2 Mesi", pack: 500, unit: "kg", defaultPrice: 62.00, duration: 2 },
            
-            { family: "Sportsmaster Mini", name: "High P", spec: "19.19.5", n: 19, p: 19, k: 5, durationMonths: 1, durationText: "1 Mese", pack: 25, defaultPrice: 56.00, duration: 1 },
-            { family: "Sportsmaster Mini", name: "High N", spec: "20.6.10 + 2MgO", n: 20, p: 6, k: 10, durationMonths: 1, durationText: "1 Mese", pack: 25, defaultPrice: 59.00, duration: 1 },
-            { family: "Sportsmaster Mini", name: "High K", spec: "13.5.20 + 2MgO", n: 13, p: 5, k: 20, durationMonths: 1, durationText: "1 Mese", pack: 25, defaultPrice: 61.00, duration: 1 },
+            { family: "Sportsmaster Mini", name: "High P", spec: "19.19.5", n: 19, p: 19, k: 5, durationMonths: 1, durationText: "1 Mese", pack: 25, unit: "kg", defaultPrice: 56.00, duration: 1 },
+            { family: "Sportsmaster Mini", name: "High N", spec: "20.6.10 + 2MgO", n: 20, p: 6, k: 10, durationMonths: 1, durationText: "1 Mese", pack: 25, unit: "kg", defaultPrice: 59.00, duration: 1 },
+            { family: "Sportsmaster Mini", name: "High K", spec: "13.5.20 + 2MgO", n: 13, p: 5, k: 20, durationMonths: 1, durationText: "1 Mese", pack: 25, unit: "kg", defaultPrice: 61.00, duration: 1 },
 
-            { family: "Sportsmaster WSF", name: "High N", spec: "35.0.14 + Te", n: 35, p: 0, k: 14, durationMonths: 0, durationText: "Pronto effetto", pack: 15, defaultPrice: 95.00, duration: 1 },
-            { family: "Sportsmaster WSF", name: "High K", spec: "15.0.43 + Te", n: 15, p: 0, k: 43, durationMonths: 0, durationText: "Pronto effetto", pack: 15, defaultPrice: 96.00, duration: 1 },
-            { family: "Sportsmaster WSF", name: "Iron", spec: "8.0.0 + 13.9 Fe + Te", n: 8, p: 0, k: 0, durationMonths: 0, durationText: "Pronto effetto", pack: 15, defaultPrice: 98.00, duration: 1 },
+            { family: "Sportsmaster WSF", name: "High N", spec: "35.0.14 + Te", n: 35, p: 0, k: 14, durationMonths: 0, durationText: "Pronto effetto", pack: 15, unit: "kg", defaultPrice: 95.00, duration: 1 },
+            { family: "Sportsmaster WSF", name: "High K", spec: "15.0.43 + Te", n: 15, p: 0, k: 43, durationMonths: 0, durationText: "Pronto effetto", pack: 15, unit: "kg", defaultPrice: 96.00, duration: 1 },
+            { family: "Sportsmaster WSF", name: "Iron", spec: "8.0.0 + 13.9 Fe + Te", n: 8, p: 0, k: 0, durationMonths: 0, durationText: "Pronto effetto", pack: 15, unit: "kg", defaultPrice: 98.00, duration: 1 },
 
-            { family: "Sportsmaster Base", name: "High N", spec: "17.0.10 + MgO", n: 17, p: 0, k: 10, durationMonths: 1, durationText: "Pronto effetto", pack: 25, defaultPrice: 98.00, duration: 1 },
-            { family: "Sportsmaster Base", name: "Pre-seeder", spec: "8.12.8", n: 8, p: 12, k: 8, durationMonths: 1, durationText: "Pronto effetto", pack: 25, defaultPrice: 98.00, duration: 1 },
-            { family: "Sportsmaster Base", name: "High N", spec: "22.6.6 + MgO", n: 22, p: 6, k: 6, durationMonths: 1, durationText: "Pronto effetto", pack: 25, defaultPrice: 98.00, duration: 1 },
-            { family: "Sportsmaster Base", name: "Cal K Mag", spec: "0.0.14 + MgO + CaO", n: 0, p: 0, k: 14, durationMonths: 1, durationText: "Pronto effetto", pack: 25, defaultPrice: 98.00, duration: 1 },            
+            { family: "Sportsmaster Base", name: "High N", spec: "17.0.10 + MgO", n: 17, p: 0, k: 10, durationMonths: 1, durationText: "Pronto effetto", pack: 25, unit: "kg", defaultPrice: 98.00, duration: 1 },
+            { family: "Sportsmaster Base", name: "Pre-seeder", spec: "8.12.8", n: 8, p: 12, k: 8, durationMonths: 1, durationText: "Pronto effetto", pack: 25, unit: "kg", defaultPrice: 98.00, duration: 1 },
+            { family: "Sportsmaster Base", name: "High N", spec: "22.6.6 + MgO", n: 22, p: 6, k: 6, durationMonths: 1, durationText: "Pronto effetto", pack: 25, unit: "kg", defaultPrice: 98.00, duration: 1 },
+            { family: "Sportsmaster Base", name: "Cal K Mag", spec: "0.0.14 + MgO + CaO", n: 0, p: 0, k: 14, durationMonths: 1, durationText: "Pronto effetto", pack: 25, unit: "kg", defaultPrice: 98.00, duration: 1 },            
             
-            { family: "Gronamic", name: "High K", spec: "Organo-minerale 7.0.20 + 3MgO", n: 7, p: 0, k: 20, durationMonths: 1, durationText: "Rilascio graduale", pack: 25, defaultPrice: 48.00, duration: 1 },
-            { family: "Gronamic", name: "High N", spec: "Organo-minerale 16.3.6 + 3MgO", n: 16, p: 3, k: 6, durationMonths: 1, durationText: "Rilascio graduale", pack: 25, defaultPrice: 52.00, duration: 1 },
-            { family: "Gronamic", name: "Golf Mini High K", spec: "Organo-minerale 5.0.22 + 3MgO", n: 5, p: 0, k: 22, durationMonths: 1, durationText: "Rilascio graduale", pack: 25, defaultPrice: 54.00, duration: 1 },
-            { family: "Gronamic", name: "Golf Mini High N", spec: "Organo-minerale 16.3.6 + MgO", n: 16, p: 3, k: 6, durationMonths: 1, durationText: "Rilascio graduale", pack: 25, defaultPrice: 50.00, duration: 1 },
+            { family: "Gronamic", name: "High K", spec: "Organo-minerale 7.0.20 + 3MgO", n: 7, p: 0, k: 20, durationMonths: 1, durationText: "Rilascio graduale", pack: 25, unit: "kg", defaultPrice: 48.00, duration: 1 },
+            { family: "Gronamic", name: "High N", spec: "Organo-minerale 16.3.6 + 3MgO", n: 16, p: 3, k: 6, durationMonths: 1, durationText: "Rilascio graduale", pack: 25, unit: "kg", defaultPrice: 52.00, duration: 1 },
+            { family: "Gronamic", name: "Golf Mini High K", spec: "Organo-minerale 5.0.22 + 3MgO", n: 5, p: 0, k: 22, durationMonths: 1, durationText: "Rilascio graduale", pack: 25, unit: "kg", defaultPrice: 54.00, duration: 1 },
+            { family: "Gronamic", name: "Golf Mini High N", spec: "Organo-minerale 16.3.6 + MgO", n: 16, p: 3, k: 6, durationMonths: 1, durationText: "Rilascio graduale", pack: 25, unit: "kg", defaultPrice: 50.00, duration: 1 },
 
-            { family: "Sierraform", name: "Momentum", spec: "22.5.11", n: 22, p: 5, k: 11, durationMonths: 2, durationText: "8-10 Settimane", pack: 20, defaultPrice: 72.00, duration: 2 },
-            { family: "Sierraform", name: "All season", spec: "18.6.18", n: 18, p: 6, k: 18, durationMonths: 2, durationText: "8-10 Settimane", pack: 20, defaultPrice: 70.00, duration: 2 },
-            { family: "Sierraform", name: "Spring Starter", spec: "16.0.16", n: 16, p: 0, k: 16, durationMonths: 2, durationText: "8-10 Settimane", pack: 20, defaultPrice: 68.00, duration: 2 },
-            { family: "Sierraform", name: "Stress Control", spec: "15.0.26", n: 15, p: 0, k: 26, durationMonths: 2, durationText: "8-10 Settimane", pack: 20, defaultPrice: 75.00, duration: 2 },
+            { family: "Sierraform", name: "Momentum", spec: "22.5.11", n: 22, p: 5, k: 11, durationMonths: 2, durationText: "8-10 Settimane", pack: 20, unit: "kg", defaultPrice: 72.00, duration: 2 },
+            { family: "Sierraform", name: "All season", spec: "18.6.18", n: 18, p: 6, k: 18, durationMonths: 2, durationText: "8-10 Settimane", pack: 20, unit: "kg", defaultPrice: 70.00, duration: 2 },
+            { family: "Sierraform", name: "Spring Starter", spec: "16.0.16", n: 16, p: 0, k: 16, durationMonths: 2, durationText: "8-10 Settimane", pack: 20, unit: "kg", defaultPrice: 68.00, duration: 2 },
+            { family: "Sierraform", name: "Stress Control", spec: "15.0.26", n: 15, p: 0, k: 26, durationMonths: 2, durationText: "8-10 Settimane", pack: 20, unit: "kg", defaultPrice: 75.00, duration: 2 },
 
-            { family: "Greenmaster Prolite", name: "NK", spec: "12.0.12", n: 12, p: 0, k: 12, durationMonths: 1, durationText: "8-10 Settimane", pack: 25, defaultPrice: 75.00, duration: 1 },
-            { family: "Greenmaster Prolite", name: "Invigorator Plus", spec: "4.3.14", n: 4, p: 3, k: 14, durationMonths: 1, durationText: "8-10 Settimane", pack: 25, defaultPrice: 75.00, duration: 1 },
-            { family: "Greenmaster Prolite", name: "Cold Start", spec: "11.5.5", n: 11, p: 5, k: 5, durationMonths: 1, durationText: "8-10 Settimane", pack: 25, defaultPrice: 75.00, duration: 1 },
+            { family: "Greenmaster Prolite", name: "NK", spec: "12.0.12", n: 12, p: 0, k: 12, durationMonths: 1, durationText: "8-10 Settimane", pack: 25, unit: "kg", defaultPrice: 75.00, duration: 1 },
+            { family: "Greenmaster Prolite", name: "Invigorator Plus", spec: "4.3.14", n: 4, p: 3, k: 14, durationMonths: 1, durationText: "8-10 Settimane", pack: 25, unit: "kg", defaultPrice: 75.00, duration: 1 },
+            { family: "Greenmaster Prolite", name: "Cold Start", spec: "11.5.5", n: 11, p: 5, k: 5, durationMonths: 1, durationText: "8-10 Settimane", pack: 25, unit: "kg", defaultPrice: 75.00, duration: 1 },
 
             { family: "Greenmaster Liquid Advance", name: "High N", spec: "33.0.0 + 2MgO + Micro", n: 33, p: 0, k: 0, durationMonths: 0, durationText: "Pronto effetto", pack: 10, unit: "L", defaultPrice: 59.50, duration: 1 },
             { family: "Greenmaster Liquid", name: "Effect Iron", spec: "6.3% Fe", n: 0, p: 0, k: 0, durationMonths: 0, durationText: "Pronto effetto", pack: 10, unit: "L", defaultPrice: 98.40, duration: 1 },
@@ -1034,9 +1034,9 @@
             { family: "Vitalnova", name: "SilK", spec: "Silicato K", n: 0, p: 0, k: 19, durationMonths: 0, durationText: "Liquido", pack: 10, unit: "L", defaultPrice: 130.00, duration: 1 },
             { family: "Vitalnova", name: "Stressbuster", spec: "Anti-stress Liquido", n: 9, p: 0, k: 0, durationMonths: 0, durationText: "Liquido", pack: 10, unit: "L", defaultPrice: 135.00, duration: 1 },
 
-            { family: "H2Pro", name: "TriSmart", spec: "Surfattante Tripla Azione", n: 0, p: 0, k: 0, durationMonths: 1, durationText: "Fino a 3 mesi", pack: 5, unit: "L", defaultPrice: 180.00, duration: 1 },
+            { family: "H2Pro", name: "TriSmart", spec: "Surfattante Tripla Azione", n: 0, p: 0, k: 0, durationMonths: 1, durationText: "Fino a 3 mesi", pack: 10, unit: "L", defaultPrice: 180.00, duration: 1 },
             { family: "H2Pro", name: "Flowsmart", spec: "Penetrante", n: 0, p: 0, k: 0, durationMonths: 1, durationText: "Fino a 2 mesi", pack: 10, unit: "L", defaultPrice: 180.00, duration: 1 },
-            { family: "H2Pro", name: "AquaSmart", spec: "Umettante", n: 0, p: 0, k: 0, durationMonths: 1, durationText: "Fino a 2 mesi", pack: 5, unit: "L", defaultPrice: 165.00, duration: 1 }
+            { family: "H2Pro", name: "AquaSmart", spec: "Umettante", n: 0, p: 0, k: 0, durationMonths: 1, durationText: "Fino a 2 mesi", pack: 10, unit: "L", defaultPrice: 165.00, duration: 1 }
         ];
 
         const pesticideCatalog = [
@@ -1177,20 +1177,34 @@
             let monthlyN = Array(12).fill(0);
 
             fertRows.forEach((r, idx) => {
-                let prodObj = productCatalog.find(p => p.family === r.family && p.name === r.product) || { n: 0, p: 0, k: 0, spec: "-", defaultPrice: 40, duration: 2, pack: 25 };
+                let prodObj = productCatalog.find(p => p.family === r.family && p.name === r.product) || { n: 0, p: 0, k: 0, spec: "-", defaultPrice: 40, duration: 2, pack: 25, unit: "kg" };
                 let doseVal = parseFloat(r.dose) || 0;
                 
-                // CORRETTO: Calcolo chili totali necessari (mq * dose g/mq / 1000) e divisione per il peso confezione
-                let kgTotali = (area * doseVal) / 1000;
                 let packSize = prodObj.pack || 25;
-                let bags = kgTotali / packSize;
+                let unitLabel = prodObj.unit || "kg";
+                
+                let bags = 0;
+                let nApp = 0, pApp = 0, kApp = 0;
+
+                if (unitLabel === "L") {
+                    let litriTotali = (area / 10000) * doseVal;
+                    bags = Math.ceil(litriTotali / packSize);
+                    
+                    let equivalentGPerSqM = doseVal / 100;
+                    nApp = (equivalentGPerSqM * prodObj.n) / 10;
+                    pApp = (equivalentGPerSqM * prodObj.p) / 10;
+                    kApp = (equivalentGPerSqM * prodObj.k) / 10;
+                } else {
+                    let kgTotali = (area / 100) * doseVal;
+                    bags = Math.ceil(kgTotali / packSize);
+                    
+                    nApp = (doseVal * prodObj.n) / 10;
+                    pApp = (doseVal * prodObj.p) / 10;
+                    kApp = (doseVal * prodObj.k) / 10;
+                }
                 
                 let costPerBag = (r.cost !== "" && r.cost !== null && !isNaN(r.cost)) ? parseFloat(r.cost) : prodObj.defaultPrice;
                 let rowCost = bags * costPerBag;
-
-                let nApp = (doseVal * prodObj.n) / 10;
-                let pApp = (doseVal * prodObj.p) / 10;
-                let kApp = (doseVal * prodObj.k) / 10;
 
                 totalN += nApp;
                 totalP += pApp;
@@ -1223,11 +1237,11 @@
                         </select>
                     </td>
                     <td><small class="text-muted">${prodObj.spec}</small></td>
-                    <td style="text-align: center;"><input type="number" class="form-control form-control-sm text-center" value="${r.dose}" style="width: 70px; display:inline-block;" onchange="updateRow(${idx}, 'dose', this.value)"> <small>g/mq</small></td>
+                    <td style="text-align: center;"><input type="number" class="form-control form-control-sm text-center" value="${r.dose}" style="width: 70px; display:inline-block;" onchange="updateRow(${idx}, 'dose', this.value)"> <small>${unitLabel === 'L' ? 'L/ha' : 'g/mq'}</small></td>
                     <td class="text-success fw-bold">${nApp.toFixed(1)}</td>
                     <td class="text-primary fw-bold">${pApp.toFixed(1)}</td>
                     <td class="text-info fw-bold">${kApp.toFixed(1)}</td>
-                    <td>${bags.toFixed(1)} conf (${packSize}kg)</td>
+                    <td>${bags} conf (${packSize}${unitLabel})</td>
                     <td style="text-align: center;"><input type="number" class="form-control form-control-sm text-center" value="${r.cost}" style="width: 75px; display:inline-block;" onchange="updateRow(${idx}, 'cost', this.value)"></td>
                     <td class="text-purple fw-bold">€ ${rowCost.toFixed(2)}</td>
                     <td class="text-center no-print"><button class="btn btn-outline-danger btn-sm py-0 px-1" onclick="removeRow(${idx})"><i class="fa-solid fa-trash"></i></button></td>
@@ -1238,7 +1252,7 @@
             document.getElementById("sumN").innerText = totalN.toFixed(1);
             document.getElementById("sumP").innerText = totalP.toFixed(1);
             document.getElementById("sumK").innerText = totalK.toFixed(1);
-            document.getElementById("sumBags").innerText = totalBags.toFixed(1);
+            document.getElementById("sumBags").innerText = totalBags;
             document.getElementById("sumCost").innerText = "€ " + totalCost.toFixed(2);
 
             document.getElementById("totalN").innerText = totalN.toFixed(1);
@@ -1275,6 +1289,7 @@
             if (firstProd) {
                 fertRows[idx].product = firstProd.name;
                 fertRows[idx].cost = firstProd.defaultPrice;
+                fertRows[idx].dose = (firstProd.unit === "L") ? 50 : 30;
             }
             renderFertTable();
             updateTimelineVisuals();
@@ -1283,7 +1298,10 @@
         function updateProduct(idx, prodName) {
             fertRows[idx].product = prodName;
             let pObj = productCatalog.find(p => p.family === fertRows[idx].family && p.name === prodName);
-            if (pObj) fertRows[idx].cost = pObj.defaultPrice;
+            if (pObj) {
+                fertRows[idx].cost = pObj.defaultPrice;
+                fertRows[idx].dose = (pObj.unit === "L") ? 50 : 30;
+            }
             renderFertTable();
         }
 
@@ -1365,7 +1383,7 @@
                     <td class="text-primary">${p.p}</td>
                     <td class="text-info">${p.k}</td>
                     <td>${p.durationText}</td>
-                    <td>${p.pack} kg</td>
+                    <td>${p.pack} ${p.unit || 'kg'}</td>
                 </tr>
             `).join('');
         }
