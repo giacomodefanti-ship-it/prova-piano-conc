@@ -244,6 +244,11 @@
             transition: background-color 0.2s;
         }
 
+        .timeline-cell.drag-over {
+            background-color: #d1fae5 !important;
+            border: 2px dashed #10b981;
+        }
+
         .timeline-badge {
             display: inline-block;
             padding: 2px 4px;
@@ -256,6 +261,10 @@
             overflow: hidden;
             text-overflow: ellipsis;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            cursor: grab;
+        }
+        .timeline-badge:active {
+            cursor: grabbing;
         }
 
         .bg-line-proturf { background-color: #0284c7; }
@@ -297,7 +306,6 @@
                     <button class="btn btn-warning btn-sm rounded-pill fw-bold text-dark px-2 shadow-sm no-print" onclick="saveUserData()" title="Salva Dati">
                         <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i> <span class="d-none d-sm-inline">Salva</span>
                     </button>
-                    <!-- Tasto Azzeramento Costi Prodotti posizionato vicino a Salva -->
                     <button class="btn btn-outline-light btn-sm rounded-pill fw-bold px-2 shadow-sm no-print" onclick="resetOnlyProductCosts()" title="Azzera Costi Prodotti">
                         <i class="fa-solid fa-rotate-left" aria-hidden="true"></i> <span class="d-none d-sm-inline">Azzera Costi</span>
                     </button>
@@ -411,7 +419,7 @@
                     <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
                         <div>
                             <h2 class="h6 fw-bold text-dark mb-1"><i class="fa-solid fa-calendar-days me-1 text-info" aria-hidden="true"></i>Timeline Annuale Interventi</h2>
-                            <p class="small text-muted mb-0" style="font-size: 0.75rem;">Vista rapida trattamenti nell'arco dell'anno.</p>
+                            <p class="small text-muted mb-0" style="font-size: 0.75rem;">Vista rapida trattamenti nell'arco dell'anno. (Trascina i badge per modificare il periodo)</p>
                         </div>
                         <div class="d-flex gap-1 flex-wrap">
                             <span class="badge bg-line-proturf" style="font-size: 0.6rem;">ProTurf</span>
@@ -513,7 +521,7 @@
                         <div class="d-flex align-items-center">
                             <i class="fa-solid fa-circle-info fs-5 text-success me-2" aria-hidden="true"></i>
                             <div>
-                                <p class="small text-muted mb-0">La timeline grafica superiore si sincronizza automaticamente in base al mese e alla settimana impostati nel campo <strong>Periodo / Timing</strong> di ogni riga.</p>
+                                <p class="small text-muted mb-0">La timeline grafica superiore si sincronizza automaticamente in base al mese e alla settimana impostati nel campo <strong>Periodo / Timing</strong> di ogni riga (o trascinando direttamente i prodotti sulle celle della timeline).</p>
                             </div>
                         </div>
                     </div>
@@ -969,9 +977,9 @@
             { family: "ProTurf", name: "High K", spec: "12.5.20 + 2CaO + 2MgO", n: 12, p: 5, k: 20, durationMonths: 2, durationText: "2 Mesi", pack: 25, unit: "kg", defaultPrice: 43.00, duration: 2 },
             { family: "ProTurf", name: "Classic", spec: "20.0.7 + 3CaO + 3MgO", n: 20, p: 0, k: 7, durationMonths: 2, durationText: "2 Mesi", pack: 25, unit: "kg", defaultPrice: 39.00, duration: 2 },
 
-            { family: "Landscaper Pro", name: "Maintenance", spec: "20.5.8 + 2MgO", n: 20, p: 5, k: 8, durationMonths: 3, durationText: "3 Mesi", pack: 25, unit: "kg", defaultPrice: 35.00, duration: 2 },
-            { family: "Landscaper Pro", name: "Stress Control", spec: "15.0.25 + 4MgO", n: 15, p: 0, k: 25, durationMonths: 3, durationText: "3 Mesi", pack: 15, unit: "kg", defaultPrice: 38.00, duration: 2 },
-            { family: "Landscaper Pro", name: "New Grass", spec: "16.25.12", n: 16, p: 25, k: 12, durationMonths: 3, durationText: "3 Mesi", pack: 15, unit: "kg", defaultPrice: 40.00, duration: 1 },
+            { family: "Landscaper Pro", name: "Maintenance", spec: "21.6.8 + 2MgO", n: 21, p: 6, k: 8, durationMonths: 3, durationText: "3 Mesi", pack: 25, unit: "kg", defaultPrice: 35.00, duration: 2 },
+            { family: "Landscaper Pro", name: "Stress Control", spec: "15.0.26 + 4MgO", n: 15, p: 0, k: 26, durationMonths: 3, durationText: "3 Mesi", pack: 15, unit: "kg", defaultPrice: 38.00, duration: 2 },
+            { family: "Landscaper Pro", name: "New Grass", spec: "16.26.12", n: 16, p: 26, k: 12, durationMonths: 3, durationText: "3 Mesi", pack: 15, unit: "kg", defaultPrice: 40.00, duration: 1 },
             { family: "Landscaper Pro", name: "Full Season", spec: "27.5.5 + 2MgO", n: 27, p: 5, k: 5, durationMonths: 8, durationText: "8-9 Mesi", pack: 15, unit: "kg", defaultPrice: 45.00, duration: 3 },
             { family: "Landscaper Pro", name: "Shade Special", spec: "11.5.5 + 8Fe", n: 11, p: 5, k: 5, durationMonths: 2, durationText: "8 Settimane", pack: 15, unit: "kg", defaultPrice: 36.00, duration: 2 },
             { family: "Landscaper Pro", name: "Flora", spec: "15.9.11 + 3MgO", n: 15, p: 9, k: 11, durationMonths: 5, durationText: "5-6 Mesi", pack: 15, unit: "kg", defaultPrice: 42.00, duration: 5 },
@@ -1084,13 +1092,15 @@
             renderFertTable();
         }
 
-        // --- TIMELINE MATRIX ---
+        // --- TIMELINE MATRIX & DRAG & DROP ---
         function initTimelineMatrix() {
             const weeksRow = document.getElementById("timelineWeeksRow");
             const cellsRow = document.getElementById("timelineCellsRow");
             if (!weeksRow || !cellsRow) return;
             weeksRow.innerHTML = "";
             cellsRow.innerHTML = "";
+
+            const monthNamesShort = ["gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic"];
 
             for (let m = 1; m <= 12; m++) {
                 for (let w = 1; w <= 4; w++) {
@@ -1102,6 +1112,12 @@
                     let td = document.createElement("td");
                     td.className = "timeline-cell";
                     td.id = `t_cell_${m}_${w}`;
+                    
+                    let monthNameAbbr = monthNamesShort[m - 1];
+                    td.setAttribute("ondragover", "allowDrop(event)");
+                    td.setAttribute("ondragleave", "removeDropStyle(event)");
+                    td.setAttribute("ondrop", `dropProduct(event, '${monthNameAbbr}', ${w})`);
+
                     cellsRow.appendChild(td);
                 }
             }
@@ -1123,12 +1139,54 @@
                     if (cell) {
                         let badge = document.createElement("span");
                         badge.className = "timeline-badge " + getFamilyBadgeClass(r.family);
-                        badge.title = `${r.product} (${r.period})`;
+                        badge.title = `${r.product} (${r.period}) - Trascina per spostare`;
                         badge.innerText = r.product.substring(0, 6);
+                        
+                        badge.setAttribute("draggable", "true");
+                        badge.setAttribute("ondragstart", `drag(event, ${idx})`);
+
                         cell.appendChild(badge);
                     }
                 }
             });
+        }
+
+        function drag(ev, rowIndex) {
+            ev.dataTransfer.setData("text/plain", rowIndex);
+        }
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+            let td = ev.target.closest('td');
+            if (td) td.classList.add('drag-over');
+        }
+
+        function removeDropStyle(ev) {
+            let td = ev.target.closest('td');
+            if (td) td.classList.remove('drag-over');
+        }
+
+        function dropProduct(event, targetMonthAbbr, targetWeek) {
+            event.preventDefault();
+            let td = event.target.closest('td');
+            if (td) td.classList.remove('drag-over');
+
+            let rowIndex = event.dataTransfer.getData("text/plain");
+            if (rowIndex !== "" && !isNaN(rowIndex)) {
+                let idx = parseInt(rowIndex);
+                if (fertRows[idx]) {
+                    let monthMap = {
+                        "gen": "Gen", "feb": "Feb", "mar": "Mar", "apr": "Apr",
+                        "mag": "Mag", "giu": "Giu", "lug": "Lug", "ago": "Ago",
+                        "set": "Set", "ott": "Ott", "nov": "Nov", "dic": "Dic"
+                    };
+                    let formattedMonth = monthMap[targetMonthAbbr] || "Mar";
+                    fertRows[idx].period = `${formattedMonth} - S${targetWeek}`;
+                    
+                    renderFertTable();
+                    updateTimelineVisuals();
+                }
+            }
         }
 
         function parsePeriodString(str) {
@@ -1165,6 +1223,14 @@
 
         // --- FERTILIZER TABLE & CALCULATIONS ---
         function renderFertTable() {
+            // Ordina automaticamente le righe in base al mese e settimana del calendario
+            fertRows.sort((a, b) => {
+                let pA = parsePeriodString(a.period) || { m: 99, w: 1 };
+                let pB = parsePeriodString(b.period) || { m: 99, w: 1 };
+                if (pA.m !== pB.m) return pA.m - pB.m;
+                return pA.w - pB.w;
+            });
+
             let tbody = document.getElementById("fertTableBody");
             if (!tbody) return;
             tbody.innerHTML = "";
@@ -1195,7 +1261,7 @@
                     pApp = (equivalentGPerSqM * prodObj.p) / 10;
                     kApp = (equivalentGPerSqM * prodObj.k) / 10;
                 } else {
-                    let kgTotali = (area / 100) * doseVal;
+                    let kgTotali = (area * doseVal) / 1000;
                     bags = Math.ceil(kgTotali / packSize);
                     
                     nApp = (doseVal * prodObj.n) / 10;
@@ -1279,7 +1345,10 @@
 
         function updateRow(idx, field, val) {
             fertRows[idx][field] = val;
-            if (field === 'period') updateTimelineVisuals();
+            if (field === 'period') {
+                renderFertTable(); // Riesegue l'ordinamento se cambia il periodo
+                updateTimelineVisuals();
+            }
             if (field === 'dose' || field === 'cost') renderFertTable();
         }
 
