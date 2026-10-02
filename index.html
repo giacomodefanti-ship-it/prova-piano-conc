@@ -80,7 +80,6 @@
             font-size: 1.35rem;
         }
 
-        /* Scrollable Navigation Tabs for Smartphones */
         .nav-tabs {
             display: flex;
             flex-wrap: nowrap;
@@ -88,13 +87,13 @@
             overflow-y: hidden;
             white-space: nowrap;
             -webkit-overflow-scrolling: touch;
-            scrollbar-width: none; /* Firefox */
+            scrollbar-width: none;
             border-bottom: 2px solid #dee2e6;
             margin-bottom: 1rem !important;
         }
 
         .nav-tabs::-webkit-scrollbar {
-            display: none; /* Safari and Chrome */
+            display: none;
         }
 
         .nav-tabs .nav-item {
@@ -271,7 +270,6 @@
             cursor: grabbing;
         }
 
-        /* Stile contenitore mappa satellitare */
         #fieldMap {
             height: 380px;
             width: 100%;
@@ -390,7 +388,7 @@
             </div>
         </section>
 
-        <!-- Navigation Tabs (Scrollable on Mobile) -->
+        <!-- Navigation Tabs -->
         <ul class="nav nav-tabs no-print" id="planTabs" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="fert-tab" data-bs-toggle="tab" data-bs-target="#fert-pane" type="button" role="tab" aria-selected="true"><i class="fa-solid fa-list-check me-1" aria-hidden="true"></i>Piano & Preventivo</button>
@@ -502,9 +500,9 @@
                             <thead>
                                 <tr>
                                     <th scope="col">Periodo</th>
-                                    <th scope="col">Linea</th>
+                                    <th scope="col">Linea / Cat.</th>
                                     <th scope="col">Prodotto</th>
-                                    <th scope="col">Specifiche</th>
+                                    <th scope="col">Specifiche / Target</th>
                                     <th scope="col" style="text-align: center;">Dose</th>
                                     <th scope="col">N</th>
                                     <th scope="col">P2O5</th>
@@ -546,7 +544,7 @@
                         <div class="d-flex align-items-center">
                             <i class="fa-solid fa-circle-info fs-5 text-success me-2" aria-hidden="true"></i>
                             <div>
-                                <p class="small text-muted mb-0">La timeline grafica superiore si sincronizza automaticamente in base al mese e alla settimana impostati nel campo <strong>Periodo / Timing</strong> di ogni riga (o trascinando direttamente i prodotti sulle celle della timeline).</p>
+                                <p class="small text-muted mb-0">Ora puoi selezionare sia i fertilizzanti che i fitofarmaci ICL direttamente in tabella. Per i fitofarmaci non vengono conteggiate unità N-P-K, ma viene calcolato accuratamente il numero di confezioni/taniche necessarie in base al dosaggio inserito.</p>
                             </div>
                         </div>
                     </div>
@@ -684,7 +682,7 @@
                         <div style="height: 220px; position: relative;" class="mb-3">
                             <canvas id="dsChart"></canvas>
                         </div>
-                        <h4 class="h6 fw-bold text-secondary mb-2" style="font-size: 0.8rem;"><i class="fa-solid fa-table-list me-1"></i>Riepilogo Numerico Rischio (Settimane Precedenti / Storico Giornaliero)</h4>
+                        <h4 class="h6 fw-bold text-secondary mb-2" style="font-size: 0.8rem;"><i class="fa-solid fa-table-list me-1"></i>Riepilogo Numerico Rischio</h4>
                         <div class="table-responsive" style="max-height: 150px; overflow-y: auto;">
                             <table class="table table-sm table-striped table-bordered mb-0" style="font-size: 0.75rem;" id="dsNumericTable">
                                 <thead class="table-secondary">
@@ -1223,18 +1221,21 @@
         ];
 
         const pesticideCatalog = [
-            { category: "Fungicida", name: "Heritage", ai: "Azoxystrobin", form: "WG", target: "Microdochium, Rhizoctonia, Pythium", dose: 0.5, unit: "kg/ha", packSize: 0.250, defaultPrice: 120.00 },
-            { category: "Fungicida", name: "Instrata Elite", ai: "Fludioxonil + Difenoconazolo", form: "SE", target: "Microdochium, Dollar Spot, Anthracnose", dose: 3.0, unit: "L/ha", packSize: 1, defaultPrice: 280.00 },
-            { category: "Fungicida", name: "Plazma", ai: "Azoxystrobin", form: "SE", target: "Microdochium, Dollar Spot, Rhizoctonia", dose: 1.0, unit: "L/ha", packSize: 1, defaultPrice: 280.00 },
-            { category: "Fungicida", name: "Anti Pythium", ai: "Ciazofamide", form: "SE", target: "Pythium", dose: 3.0, unit: "L/ha", packSize: 0.5, defaultPrice: 280.00 },
-            { category: "Fungicida", name: "Dedicate", ai: "Trifloxystrobin + Tebuconazolo", form: "SE", target: "Dollar Spot, Microdochium", dose: 1, unit: "L/ha", packSize: 0.250, defaultPrice: 150.00 },
-            { category: "Fungicida Bio", name: "Bioten", ai: "Trichoderma gamsii + T. asperellum", form: "WP", target: "Patogeni radicali e del colletto", dose: 2.5, unit: "kg/ha", packSize: 1, defaultPrice: 110.00 },
-            { category: "Insetticida", name: "Acelepryn 200 SC", ai: "Chlorantraniliprole", form: "SC", target: "Popillia japonica, Larve Coleotteri", dose: 0.6, unit: "L/ha", packSize: 0.6, defaultPrice: 195.00 },
-            { category: "Insetticida Bio", name: "NemaTrident B", ai: "Nematodi Entomopatogeni", form: "Gel", target: "Larve Coleotteri e Tipula", dose: 50, unit: "unità/ha", packSize: 1, defaultPrice: 140.00 },
-            { category: "Erbicida", name: "Dicotex", ai: "2,4-D + MCPA + MCPP-P + Dicamba", form: "SL", target: "Infestanti a foglia larga", dose: 5.0, unit: "L/ha", packSize: 5, defaultPrice: 130.00 },
-            { category: "Erbicida", name: "Overtake", ai: "Florasulam + Halauxifen-methyl", form: "SC", target: "Dicotiledoni ostinate", dose: 2.0, unit: "L/ha", packSize: 1, defaultPrice: 165.00 },
-            { category: "Erbicida", name: "Ready Germiplus", ai: "Pendimethalin", form: "GR", target: "Pre-emergenza graminacee", dose: 70.0, unit: "kg/ha", packSize: 7, defaultPrice: 75.00 }
+            { category: "Fitofarmaci", family: "Fitofarmaci", name: "Heritage", spec: "Azoxystrobin (WG)", n: 0, p: 0, k: 0, pack: 0.250, unit: "kg", defaultPrice: 120.00, duration: 1 },
+            { category: "Fitofarmaci", family: "Fitofarmaci", name: "Instrata Elite", spec: "Fludioxonil + Difenoconazolo (SE)", n: 0, p: 0, k: 0, pack: 1, unit: "L", defaultPrice: 280.00, duration: 1 },
+            { category: "Fitofarmaci", family: "Fitofarmaci", name: "Plazma", spec: "Azoxystrobin (SE)", n: 0, p: 0, k: 0, pack: 1, unit: "L", defaultPrice: 280.00, duration: 1 },
+            { category: "Fitofarmaci", family: "Fitofarmaci", name: "Anti Pythium", spec: "Ciazofamide (SE)", n: 0, p: 0, k: 0, pack: 0.5, unit: "L", defaultPrice: 280.00, duration: 1 },
+            { category: "Fitofarmaci", family: "Fitofarmaci", name: "Dedicate", spec: "Trifloxystrobin + Tebuconazolo (SE)", n: 0, p: 0, k: 0, pack: 0.250, unit: "L", defaultPrice: 150.00, duration: 1 },
+            { category: "Fitofarmaci", family: "Fitofarmaci", name: "Bioten", spec: "Trichoderma (WP)", n: 0, p: 0, k: 0, pack: 1, unit: "kg", defaultPrice: 110.00, duration: 1 },
+            { category: "Fitofarmaci", family: "Fitofarmaci", name: "Acelepryn 200 SC", spec: "Chlorantraniliprole (SC)", n: 0, p: 0, k: 0, pack: 0.6, unit: "L", defaultPrice: 195.00, duration: 1 },
+            { category: "Fitofarmaci", family: "Fitofarmaci", name: "NemaTrident B", spec: "Nematodi Entomopatogeni (Gel)", n: 0, p: 0, k: 0, pack: 1, unit: "kg", defaultPrice: 140.00, duration: 1 },
+            { category: "Fitofarmaci", family: "Fitofarmaci", name: "Dicotex", spec: "Erbicida selettivo (SL)", n: 0, p: 0, k: 0, pack: 5, unit: "L", defaultPrice: 130.00, duration: 1 },
+            { category: "Fitofarmaci", family: "Fitofarmaci", name: "Overtake", spec: "Erbicida dicotiledoni (SC)", n: 0, p: 0, k: 0, pack: 1, unit: "L", defaultPrice: 165.00, duration: 1 },
+            { category: "Fitofarmaci", family: "Fitofarmaci", name: "Ready Germiplus", spec: "Pendimethalin (GR)", n: 0, p: 0, k: 0, pack: 7, unit: "kg", defaultPrice: 75.00, duration: 1 }
         ];
+
+        // Unione completa dei cataloghi per la tabella interventi
+        const masterProductCatalog = [...productCatalog, ...pesticideCatalog];
 
         let fertRows = [
             { period: "Mar - S1", family: "ProTurf", product: "High N", dose: 30, unit: "conf", cost: 42 },
@@ -1242,7 +1243,6 @@
             { period: "Set - S1", family: "ProTurf", product: "High K", dose: 30, unit: "conf", cost: 43 }
         ];
 
-        // Gestione Quaderno di Campagna con localStorage
         let quadernoRows = [];
         let savedQuaderno = localStorage.getItem('icl_quaderno_rows');
         if (savedQuaderno) {
@@ -1254,7 +1254,6 @@
             ];
         }
 
-        // Gestione Marker Malattie Mappa con localStorage
         let geoMarkers = [];
         let savedGeoMarkers = localStorage.getItem('icl_geo_markers');
         if (savedGeoMarkers) {
@@ -1422,7 +1421,7 @@
             return "bg-line-default";
         }
 
-        // --- FERTILIZER TABLE & CALCULATIONS ---
+        // --- FERTILIZER & PESTICIDE TABLE CALCULATIONS ---
         function renderFertTable() {
             fertRows.sort((a, b) => {
                 let pA = parsePeriodString(a.period) || { m: 99, w: 1 };
@@ -1441,21 +1440,25 @@
             let area = (areaInput && !isNaN(parseFloat(areaInput.value))) ? parseFloat(areaInput.value) : 5000;
             
             let monthlyN = Array(12).fill(0);
+            let allFamilies = [...new Set(masterProductCatalog.map(p => p.family))];
 
             fertRows.forEach((r, idx) => {
-                let prodObj = productCatalog.find(p => p.family === r.family && p.name === r.product) || { n: 0, p: 0, k: 0, spec: "-", defaultPrice: 40, duration: 2, pack: 25, unit: "kg" };
+                let prodObj = masterProductCatalog.find(p => p.family === r.family && p.name === r.product) || { n: 0, p: 0, k: 0, spec: "-", defaultPrice: 40, duration: 2, pack: 25, unit: "kg" };
                 let doseVal = parseFloat(r.dose) || 0;
                 
                 let packSize = prodObj.pack || 25;
                 let unitLabel = prodObj.unit || "kg";
+                let isPesticide = (r.family === "Fitofarmaci");
                 
                 let bags = 0;
                 let nApp = 0, pApp = 0, kApp = 0;
 
-                if (unitLabel === "L") {
+                if (isPesticide) {
+                    let totalUnits = (area / 10000) * doseVal; // litri o kg totali trattati in base alla dose ettarola
+                    bags = Math.ceil(totalUnits / packSize);
+                } else if (unitLabel === "L") {
                     let litriTotali = (area / 10000) * doseVal;
                     bags = Math.ceil(litriTotali / packSize);
-                    
                     let equivalentGPerSqM = doseVal / 100;
                     nApp = (equivalentGPerSqM * prodObj.n) / 10;
                     pApp = (equivalentGPerSqM * prodObj.p) / 10;
@@ -1463,7 +1466,6 @@
                 } else {
                     let kgTotali = (area * doseVal) / 1000;
                     bags = Math.ceil(kgTotali / packSize);
-                    
                     nApp = (doseVal * prodObj.n) / 10;
                     pApp = (doseVal * prodObj.p) / 10;
                     kApp = (doseVal * prodObj.k) / 10;
@@ -1472,14 +1474,16 @@
                 let costPerBag = (r.cost !== "" && r.cost !== null && !isNaN(r.cost)) ? parseFloat(r.cost) : prodObj.defaultPrice;
                 let rowCost = bags * costPerBag;
 
-                totalN += nApp;
-                totalP += pApp;
-                totalK += kApp;
+                if (!isPesticide) {
+                    totalN += nApp;
+                    totalP += pApp;
+                    totalK += kApp;
+                }
                 totalBags += bags;
                 totalCost += rowCost;
 
                 let parsed = parsePeriodString(r.period);
-                if (parsed && prodObj.n > 0) {
+                if (parsed && !isPesticide && prodObj.n > 0) {
                     let startMonth = parsed.m;
                     let durationMonths = Math.max(1, prodObj.duration || 2);
                     let nPerMonth = nApp / durationMonths;
@@ -1489,25 +1493,27 @@
                     }
                 }
 
+                let productsInFamily = masterProductCatalog.filter(p => p.family === r.family);
+
                 let tr = document.createElement("tr");
                 tr.innerHTML = `
                     <td><input type="text" class="form-control form-control-sm" value="${r.period}" onchange="updateRow(${idx}, 'period', this.value)" style="min-width: 90px;"></td>
                     <td>
                         <select class="form-select form-select-sm" onchange="updateFamily(${idx}, this.value)" style="min-width: 110px;">
-                            ${[...new Set(productCatalog.map(p => p.family))].map(f => `<option value="${f}" ${f === r.family ? 'selected' : ''}>${f}</option>`).join('')}
+                            ${allFamilies.map(f => `<option value="${f}" ${f === r.family ? 'selected' : ''}>${f}</option>`).join('')}
                         </select>
                     </td>
                     <td>
                         <select class="form-select form-select-sm" onchange="updateProduct(${idx}, this.value)" style="min-width: 130px;">
-                            ${productCatalog.filter(p => p.family === r.family).map(p => `<option value="${p.name}" ${p.name === r.product ? 'selected' : ''}>${p.name}</option>`).join('')}
+                            ${productsInFamily.map(p => `<option value="${p.name}" ${p.name === r.product ? 'selected' : ''}>${p.name}</option>`).join('')}
                         </select>
                     </td>
                     <td><small class="text-muted">${prodObj.spec}</small></td>
-                    <td style="text-align: center;"><input type="number" class="form-control form-control-sm text-center" value="${r.dose}" style="width: 70px; display:inline-block;" onchange="updateRow(${idx}, 'dose', this.value)"> <small>${unitLabel === 'L' ? 'L/ha' : 'g/mq'}</small></td>
-                    <td class="text-success fw-bold">${nApp.toFixed(1)}</td>
-                    <td class="text-primary fw-bold">${pApp.toFixed(1)}</td>
-                    <td class="text-info fw-bold">${kApp.toFixed(1)}</td>
-                    <td>${bags} conf (${packSize}${unitLabel})</td>
+                    <td style="text-align: center;"><input type="number" class="form-control form-control-sm text-center" value="${r.dose}" style="width: 70px; display:inline-block;" onchange="updateRow(${idx}, 'dose', this.value)"> <small>${unitLabel}/ha</small></td>
+                    <td class="${isPesticide ? 'text-muted' : 'text-success fw-bold'}">${isPesticide ? '-' : nApp.toFixed(1)}</td>
+                    <td class="${isPesticide ? 'text-muted' : 'text-primary fw-bold'}">${isPesticide ? '-' : pApp.toFixed(1)}</td>
+                    <td class="${isPesticide ? 'text-muted' : 'text-info fw-bold'}">${isPesticide ? '-' : kApp.toFixed(1)}</td>
+                    <td>${bags} conf (${packSize} ${unitLabel})</td>
                     <td style="text-align: center;"><input type="number" class="form-control form-control-sm text-center" value="${r.cost}" style="width: 75px; display:inline-block;" onchange="updateRow(${idx}, 'cost', this.value)"></td>
                     <td class="text-purple fw-bold">€ ${rowCost.toFixed(2)}</td>
                     <td class="text-center no-print"><button class="btn btn-outline-danger btn-sm py-0 px-1" onclick="removeRow(${idx})"><i class="fa-solid fa-trash"></i></button></td>
@@ -1554,11 +1560,11 @@
 
         function updateFamily(idx, fam) {
             fertRows[idx].family = fam;
-            let firstProd = productCatalog.find(p => p.family === fam);
+            let firstProd = masterProductCatalog.find(p => p.family === fam);
             if (firstProd) {
                 fertRows[idx].product = firstProd.name;
                 fertRows[idx].cost = firstProd.defaultPrice;
-                fertRows[idx].dose = (firstProd.unit === "L") ? 50 : 30;
+                fertRows[idx].dose = (firstProd.family === "Fitofarmaci") ? 1.0 : 30;
             }
             renderFertTable();
             updateTimelineVisuals();
@@ -1566,10 +1572,10 @@
 
         function updateProduct(idx, prodName) {
             fertRows[idx].product = prodName;
-            let pObj = productCatalog.find(p => p.family === fertRows[idx].family && p.name === prodName);
+            let pObj = masterProductCatalog.find(p => p.family === fertRows[idx].family && p.name === prodName);
             if (pObj) {
                 fertRows[idx].cost = pObj.defaultPrice;
-                fertRows[idx].dose = (pObj.unit === "L") ? 50 : 30;
+                fertRows[idx].dose = (pObj.family === "Fitofarmaci") ? 1.0 : 30;
             }
             renderFertTable();
         }
@@ -1666,7 +1672,20 @@
         function renderPesticidesTable() {
             let tbody = document.getElementById("pesticidesTableBody");
             if (!tbody) return;
-            tbody.innerHTML = pesticideCatalog.map(p => `
+            let pesticideListSource = [
+                { category: "Fungicida", name: "Heritage", ai: "Azoxystrobin", form: "WG", target: "Microdochium, Rhizoctonia, Pythium", dose: 0.5, unit: "kg/ha", packSize: 0.250, defaultPrice: 120.00 },
+                { category: "Fungicida", name: "Instrata Elite", ai: "Fludioxonil + Difenoconazolo", form: "SE", target: "Microdochium, Dollar Spot, Anthracnose", dose: 3.0, unit: "L/ha", packSize: 1, defaultPrice: 280.00 },
+                { category: "Fungicida", name: "Plazma", ai: "Azoxystrobin", form: "SE", target: "Microdochium, Dollar Spot, Rhizoctonia", dose: 1.0, unit: "L/ha", packSize: 1, defaultPrice: 280.00 },
+                { category: "Fungicida", name: "Anti Pythium", ai: "Ciazofamide", form: "SE", target: "Pythium", dose: 3.0, unit: "L/ha", packSize: 0.5, defaultPrice: 280.00 },
+                { category: "Fungicida", name: "Dedicate", ai: "Trifloxystrobin + Tebuconazolo", form: "SE", target: "Dollar Spot, Microdochium", dose: 1, unit: "L/ha", packSize: 0.250, defaultPrice: 150.00 },
+                { category: "Fungicida Bio", name: "Bioten", ai: "Trichoderma gamsii + T. asperellum", form: "WP", target: "Patogeni radicali e del colletto", dose: 2.5, unit: "kg/ha", packSize: 1, defaultPrice: 110.00 },
+                { category: "Insetticida", name: "Acelepryn 200 SC", ai: "Chlorantraniliprole", form: "SC", target: "Popillia japonica, Larve Coleotteri", dose: 0.6, unit: "L/ha", packSize: 0.6, defaultPrice: 195.00 },
+                { category: "Insetticida Bio", name: "NemaTrident B", ai: "Nematodi Entomopatogeni", form: "Gel", target: "Larve Coleotteri e Tipula", dose: 50, unit: "unità/ha", packSize: 1, defaultPrice: 140.00 },
+                { category: "Erbicida", name: "Dicotex", ai: "2,4-D + MCPA + MCPP-P + Dicamba", form: "SL", target: "Infestanti a foglia larga", dose: 5.0, unit: "L/ha", packSize: 5, defaultPrice: 130.00 },
+                { category: "Erbicida", name: "Overtake", ai: "Florasulam + Halauxifen-methyl", form: "SC", target: "Dicotiledoni ostinate", dose: 2.0, unit: "L/ha", packSize: 1, defaultPrice: 165.00 },
+                { category: "Erbicida", name: "Ready Germiplus", ai: "Pendimethalin", form: "GR", target: "Pre-emergenza graminacee", dose: 70.0, unit: "kg/ha", packSize: 7, defaultPrice: 75.00 }
+            ];
+            tbody.innerHTML = pesticideListSource.map(p => `
                 <tr>
                     <td><span class="badge bg-danger">${p.category}</span></td>
                     <td class="fw-bold">${p.name}</td>
@@ -1823,7 +1842,7 @@
             return '<span class="badge bg-success" style="font-size: 0.7rem;">Rischio Basso</span>';
         }
 
-        // --- QUADERNO DI CAMPAGNA (PERSISTENTE CON LOCALSTORAGE) ---
+        // --- QUADERNO DI CAMPAGNA ---
         function renderQuadernoTable() {
             let tbody = document.getElementById("quadernoTableBody");
             if (!tbody) return;
@@ -1870,7 +1889,6 @@
 
             mapObj = L.map('fieldMap').setView([defaultLat, defaultLng], 17);
 
-            // Sostituito con layer di immagini satellitari Esri World Imagery (stile Google Maps Satellite)
             L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
                 maxZoom: 19,
                 attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
