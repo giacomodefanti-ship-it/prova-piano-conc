@@ -60,7 +60,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* --- MOBILE OPTIMIZATIONS --- */
         .container-fluid, .container {
             padding-left: 12px !important;
             padding-right: 12px !important;
@@ -281,10 +280,10 @@
         .bg-line-proturf { background-color: #0284c7; }
         .bg-line-landscaper { background-color: #0d9488; }
         .bg-line-sportsmaster { background-color: #4f46e5; }
-        .bg-line-sportsmaster-base { background-color: #4f46e5; }
         .bg-line-gronamic { background-color: #16a34a; }
         .bg-line-sierrablen-plus { background-color: #ffa500; }
         .bg-line-fitofarmaci { background-color: #dc2626; }
+        .bg-line-manutenzione { background-color: #6f42c1; }
         .bg-line-default { background-color: #64748b; }
 
         @media print {
@@ -451,6 +450,7 @@
                             <span class="badge bg-line-gronamic" style="font-size: 0.6rem;">Gronamic</span>
                             <span class="badge bg-line-sierrablen-plus" style="font-size: 0.6rem;">Sierrablen</span>
                             <span class="badge bg-line-fitofarmaci" style="font-size: 0.6rem;">Fitofarmaci</span>
+                            <span class="badge bg-line-manutenzione" style="font-size: 0.6rem;">Manutenzione</span>
                         </div>
                     </div>
 
@@ -501,8 +501,8 @@
                                 <tr>
                                     <th scope="col">Periodo</th>
                                     <th scope="col">Linea / Cat.</th>
-                                    <th scope="col">Prodotto</th>
-                                    <th scope="col">Specifiche / Target</th>
+                                    <th scope="col">Prodotto / Intervento</th>
+                                    <th scope="col">Specifiche / Descrizione</th>
                                     <th scope="col" style="text-align: center;">Dose</th>
                                     <th scope="col">N</th>
                                     <th scope="col">P2O5</th>
@@ -544,7 +544,7 @@
                         <div class="d-flex align-items-center">
                             <i class="fa-solid fa-circle-info fs-5 text-success me-2" aria-hidden="true"></i>
                             <div>
-                                <p class="small text-muted mb-0">Ora puoi selezionare sia i fertilizzanti che i fitofarmaci ICL direttamente in tabella. Per i fitofarmaci non vengono conteggiate unità N-P-K, ma viene calcolato accuratamente il numero di confezioni/taniche necessarie in base al dosaggio inserito.</p>
+                                <p class="small text-muted mb-0">Gestisci fertilizzanti, fitofarmaci e pratiche manutentive (es. carotature con descrizione libera) in un'unica tabella integrata.</p>
                             </div>
                         </div>
                     </div>
@@ -1221,21 +1221,24 @@
         ];
 
         const pesticideCatalog = [
-            { category: "Fitofarmaci", family: "Fitofarmaci", name: "Heritage", spec: "Azoxystrobin (WG)", n: 0, p: 0, k: 0, pack: 0.250, unit: "kg", defaultPrice: 120.00, duration: 1 },
-            { category: "Fitofarmaci", family: "Fitofarmaci", name: "Instrata Elite", spec: "Fludioxonil + Difenoconazolo (SE)", n: 0, p: 0, k: 0, pack: 1, unit: "L", defaultPrice: 280.00, duration: 1 },
-            { category: "Fitofarmaci", family: "Fitofarmaci", name: "Plazma", spec: "Azoxystrobin (SE)", n: 0, p: 0, k: 0, pack: 1, unit: "L", defaultPrice: 280.00, duration: 1 },
-            { category: "Fitofarmaci", family: "Fitofarmaci", name: "Anti Pythium", spec: "Ciazofamide (SE)", n: 0, p: 0, k: 0, pack: 0.5, unit: "L", defaultPrice: 280.00, duration: 1 },
-            { category: "Fitofarmaci", family: "Fitofarmaci", name: "Dedicate", spec: "Trifloxystrobin + Tebuconazolo (SE)", n: 0, p: 0, k: 0, pack: 0.250, unit: "L", defaultPrice: 150.00, duration: 1 },
-            { category: "Fitofarmaci", family: "Fitofarmaci", name: "Bioten", spec: "Trichoderma (WP)", n: 0, p: 0, k: 0, pack: 1, unit: "kg", defaultPrice: 110.00, duration: 1 },
-            { category: "Fitofarmaci", family: "Fitofarmaci", name: "Acelepryn 200 SC", spec: "Chlorantraniliprole (SC)", n: 0, p: 0, k: 0, pack: 0.6, unit: "L", defaultPrice: 195.00, duration: 1 },
-            { category: "Fitofarmaci", family: "Fitofarmaci", name: "NemaTrident B", spec: "Nematodi Entomopatogeni (Gel)", n: 0, p: 0, k: 0, pack: 1, unit: "kg", defaultPrice: 140.00, duration: 1 },
-            { category: "Fitofarmaci", family: "Fitofarmaci", name: "Dicotex", spec: "Erbicida selettivo (SL)", n: 0, p: 0, k: 0, pack: 5, unit: "L", defaultPrice: 130.00, duration: 1 },
-            { category: "Fitofarmaci", family: "Fitofarmaci", name: "Overtake", spec: "Erbicida dicotiledoni (SC)", n: 0, p: 0, k: 0, pack: 1, unit: "L", defaultPrice: 165.00, duration: 1 },
-            { category: "Fitofarmaci", family: "Fitofarmaci", name: "Ready Germiplus", spec: "Pendimethalin (GR)", n: 0, p: 0, k: 0, pack: 7, unit: "kg", defaultPrice: 75.00, duration: 1 }
+            { family: "Fitofarmaci", name: "Heritage", spec: "Azoxystrobin (WG)", n: 0, p: 0, k: 0, pack: 0.250, unit: "kg", defaultPrice: 120.00, duration: 1 },
+            { family: "Fitofarmaci", name: "Instrata Elite", spec: "Fludioxonil + Difenoconazolo (SE)", n: 0, p: 0, k: 0, pack: 1, unit: "L", defaultPrice: 280.00, duration: 1 },
+            { family: "Fitofarmaci", name: "Plazma", spec: "Azoxystrobin (SE)", n: 0, p: 0, k: 0, pack: 1, unit: "L", defaultPrice: 280.00, duration: 1 },
+            { family: "Fitofarmaci", name: "Anti Pythium", spec: "Ciazofamide (SE)", n: 0, p: 0, k: 0, pack: 0.5, unit: "L", defaultPrice: 280.00, duration: 1 },
+            { family: "Fitofarmaci", name: "Dedicate", spec: "Trifloxystrobin + Tebuconazolo (SE)", n: 0, p: 0, k: 0, pack: 0.250, unit: "L", defaultPrice: 150.00, duration: 1 },
+            { family: "Fitofarmaci", name: "Bioten", spec: "Trichoderma (WP)", n: 0, p: 0, k: 0, pack: 1, unit: "kg", defaultPrice: 110.00, duration: 1 },
+            { family: "Fitofarmaci", name: "Acelepryn 200 SC", spec: "Chlorantraniliprole (SC)", n: 0, p: 0, k: 0, pack: 0.6, unit: "L", defaultPrice: 195.00, duration: 1 },
+            { family: "Fitofarmaci", name: "NemaTrident B", spec: "Nematodi Entomopatogeni (Gel)", n: 0, p: 0, k: 0, pack: 1, unit: "kg", defaultPrice: 140.00, duration: 1 },
+            { family: "Fitofarmaci", name: "Dicotex", spec: "Erbicida selettivo (SL)", n: 0, p: 0, k: 0, pack: 5, unit: "L", defaultPrice: 130.00, duration: 1 },
+            { family: "Fitofarmaci", name: "Overtake", spec: "Erbicida dicotiledoni (SC)", n: 0, p: 0, k: 0, pack: 1, unit: "L", defaultPrice: 165.00, duration: 1 },
+            { family: "Fitofarmaci", name: "Ready Germiplus", spec: "Pendimethalin (GR)", n: 0, p: 0, k: 0, pack: 7, unit: "kg", defaultPrice: 75.00, duration: 1 }
         ];
 
-        // Unione completa dei cataloghi per la tabella interventi
-        const masterProductCatalog = [...productCatalog, ...pesticideCatalog];
+        const agronomicCatalog = [
+            { family: "Manutenzione", name: "Altra Operazione", spec: "Descrizione libera", n: 0, p: 0, k: 0, pack: 1, unit: "mq", defaultPrice: 0.00, duration: 1 }
+        ];
+
+        const masterProductCatalog = [...productCatalog, ...pesticideCatalog, ...agronomicCatalog];
 
         let fertRows = [
             { period: "Mar - S1", family: "ProTurf", product: "High N", dose: 30, unit: "conf", cost: 42 },
@@ -1418,10 +1421,11 @@
             if (f.includes("gronamic")) return "bg-line-gronamic";
             if (f.includes("sierra")) return "bg-line-sierrablen-plus";
             if (f.includes("fitofarmaci")) return "bg-line-fitofarmaci";
+            if (f.includes("manutenzione")) return "bg-line-manutenzione";
             return "bg-line-default";
         }
 
-        // --- FERTILIZER & PESTICIDE TABLE CALCULATIONS ---
+        // --- FERTILIZER, PESTICIDE & AGRONOMIC TABLE CALCULATIONS ---
         function renderFertTable() {
             fertRows.sort((a, b) => {
                 let pA = parsePeriodString(a.period) || { m: 99, w: 1 };
@@ -1443,18 +1447,21 @@
             let allFamilies = [...new Set(masterProductCatalog.map(p => p.family))];
 
             fertRows.forEach((r, idx) => {
-                let prodObj = masterProductCatalog.find(p => p.family === r.family && p.name === r.product) || { n: 0, p: 0, k: 0, spec: "-", defaultPrice: 40, duration: 2, pack: 25, unit: "kg" };
+                let prodObj = masterProductCatalog.find(p => p.family === r.family && p.name === r.product) || { n: 0, p: 0, k: 0, spec: "-", defaultPrice: 0, duration: 1, pack: 1, unit: "mq" };
                 let doseVal = parseFloat(r.dose) || 0;
                 
-                let packSize = prodObj.pack || 25;
-                let unitLabel = prodObj.unit || "kg";
+                let packSize = prodObj.pack || 1;
+                let unitLabel = prodObj.unit || "mq";
                 let isPesticide = (r.family === "Fitofarmaci");
+                let isAgronomic = (r.family === "Manutenzione");
                 
                 let bags = 0;
                 let nApp = 0, pApp = 0, kApp = 0;
 
-                if (isPesticide) {
-                    let totalUnits = (area / 10000) * doseVal; // litri o kg totali trattati in base alla dose ettarola
+                if (isAgronomic) {
+                    bags = 1;
+                } else if (isPesticide) {
+                    let totalUnits = (area / 10000) * doseVal;
                     bags = Math.ceil(totalUnits / packSize);
                 } else if (unitLabel === "L") {
                     let litriTotali = (area / 10000) * doseVal;
@@ -1472,18 +1479,18 @@
                 }
                 
                 let costPerBag = (r.cost !== "" && r.cost !== null && !isNaN(r.cost)) ? parseFloat(r.cost) : prodObj.defaultPrice;
-                let rowCost = bags * costPerBag;
+                let rowCost = isAgronomic ? costPerBag : (bags * costPerBag);
 
-                if (!isPesticide) {
+                if (!isPesticide && !isAgronomic) {
                     totalN += nApp;
                     totalP += pApp;
                     totalK += kApp;
                 }
-                totalBags += bags;
+                totalBags += (isAgronomic ? 0 : bags);
                 totalCost += rowCost;
 
                 let parsed = parsePeriodString(r.period);
-                if (parsed && !isPesticide && prodObj.n > 0) {
+                if (parsed && !isPesticide && !isAgronomic && prodObj.n > 0) {
                     let startMonth = parsed.m;
                     let durationMonths = Math.max(1, prodObj.duration || 2);
                     let nPerMonth = nApp / durationMonths;
@@ -1504,16 +1511,24 @@
                         </select>
                     </td>
                     <td>
-                        <select class="form-select form-select-sm" onchange="updateProduct(${idx}, this.value)" style="min-width: 130px;">
-                            ${productsInFamily.map(p => `<option value="${p.name}" ${p.name === r.product ? 'selected' : ''}>${p.name}</option>`).join('')}
-                        </select>
+                        ${isAgronomic 
+                            ? `<input type="text" class="form-control form-control-sm" value="${r.product}" onchange="updateRow(${idx}, 'product', this.value)" placeholder="Es. Carotatura..." style="min-width: 130px;">`
+                            : `<select class="form-select form-select-sm" onchange="updateProduct(${idx}, this.value)" style="min-width: 130px;">
+                                ${productsInFamily.map(p => `<option value="${p.name}" ${p.name === r.product ? 'selected' : ''}>${p.name}</option>`).join('')}
+                               </select>`
+                        }
                     </td>
-                    <td><small class="text-muted">${prodObj.spec}</small></td>
-                    <td style="text-align: center;"><input type="number" class="form-control form-control-sm text-center" value="${r.dose}" style="width: 70px; display:inline-block;" onchange="updateRow(${idx}, 'dose', this.value)"> <small>${unitLabel}/ha</small></td>
-                    <td class="${isPesticide ? 'text-muted' : 'text-success fw-bold'}">${isPesticide ? '-' : nApp.toFixed(1)}</td>
-                    <td class="${isPesticide ? 'text-muted' : 'text-primary fw-bold'}">${isPesticide ? '-' : pApp.toFixed(1)}</td>
-                    <td class="${isPesticide ? 'text-muted' : 'text-info fw-bold'}">${isPesticide ? '-' : kApp.toFixed(1)}</td>
-                    <td>${bags} conf (${packSize} ${unitLabel})</td>
+                    <td><small class="text-muted">${isAgronomic ? 'Lavorazione agronomica' : prodObj.spec}</small></td>
+                    <td style="text-align: center;">
+                        ${isAgronomic 
+                            ? `<span class="text-muted">-</span>` 
+                            : `<input type="number" class="form-control form-control-sm text-center" value="${r.dose}" style="width: 70px; display:inline-block;" onchange="updateRow(${idx}, 'dose', this.value)"> <small>${unitLabel}/ha</small>`
+                        }
+                    </td>
+                    <td class="${(isPesticide || isAgronomic) ? 'text-muted' : 'text-success fw-bold'}">${(isPesticide || isAgronomic) ? '-' : nApp.toFixed(1)}</td>
+                    <td class="${(isPesticide || isAgronomic) ? 'text-muted' : 'text-primary fw-bold'}">${(isPesticide || isAgronomic) ? '-' : pApp.toFixed(1)}</td>
+                    <td class="${(isPesticide || isAgronomic) ? 'text-muted' : 'text-info fw-bold'}">${(isPesticide || isAgronomic) ? '-' : kApp.toFixed(1)}</td>
+                    <td>${isAgronomic ? 'Intervento' : (bags + ' conf (' + packSize + ' ' + unitLabel + ')')}</td>
                     <td style="text-align: center;"><input type="number" class="form-control form-control-sm text-center" value="${r.cost}" style="width: 75px; display:inline-block;" onchange="updateRow(${idx}, 'cost', this.value)"></td>
                     <td class="text-purple fw-bold">€ ${rowCost.toFixed(2)}</td>
                     <td class="text-center no-print"><button class="btn btn-outline-danger btn-sm py-0 px-1" onclick="removeRow(${idx})"><i class="fa-solid fa-trash"></i></button></td>
@@ -1555,7 +1570,7 @@
                 renderFertTable();
                 updateTimelineVisuals();
             }
-            if (field === 'dose' || field === 'cost') renderFertTable();
+            if (field === 'dose' || field === 'cost' || field === 'product') renderFertTable();
         }
 
         function updateFamily(idx, fam) {
@@ -1564,7 +1579,7 @@
             if (firstProd) {
                 fertRows[idx].product = firstProd.name;
                 fertRows[idx].cost = firstProd.defaultPrice;
-                fertRows[idx].dose = (firstProd.family === "Fitofarmaci") ? 1.0 : 30;
+                fertRows[idx].dose = (fam === "Fitofarmaci") ? 1.0 : (fam === "Manutenzione" ? 0 : 30);
             }
             renderFertTable();
             updateTimelineVisuals();
@@ -1575,7 +1590,7 @@
             let pObj = masterProductCatalog.find(p => p.family === fertRows[idx].family && p.name === prodName);
             if (pObj) {
                 fertRows[idx].cost = pObj.defaultPrice;
-                fertRows[idx].dose = (pObj.family === "Fitofarmaci") ? 1.0 : 30;
+                fertRows[idx].dose = (fertRows[idx].family === "Fitofarmaci") ? 1.0 : 30;
             }
             renderFertTable();
         }
